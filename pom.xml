@@ -291,4 +291,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<inceptionYear>2015</inceptionYear>
 </project>
