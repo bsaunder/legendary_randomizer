@@ -1,0 +1,294 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.bryansaunders</groupId>
+	<artifactId>legendary_randomizer</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Legendary Card Randomizer</name>
+	<description>Generate a Random Setup for Marvel Legendary</description>
+	<url>https://github.com/bsaunder/legendary_randomizer</url>
+	<organization>
+		<name>Bryan Saunders</name>
+		<url>http://bryansaunders.net</url>
+	</organization>
+	<scm>
+		<url>https://github.com/bsaunder/legendary_randomizer</url>
+		<tag>HEAD</tag>
+		<connection>scm:git:ssh://github.com/bsaunder/legendary_randomizer.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/bsaunder/legendary_randomizer.git</developerConnection>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/bsaunder/legendary_randomizer</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Travis-CI</system>
+		<url>https://travis-ci.org/bsaunder/legendary_randomizer</url>
+	</ciManagement>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+
+		<version.plugin.checkstyle>2.8</version.plugin.checkstyle>
+		<version.plugin.failsafe>2.12.2</version.plugin.failsafe>
+		<version.plugin.findbugs>2.5.5</version.plugin.findbugs>
+		<version.plugin.javadoc>2.7</version.plugin.javadoc>
+		<version.plugin.license>1.2</version.plugin.license>
+		<version.plugin.pmd>2.7</version.plugin.pmd>
+		<version.plugin.release>2.5</version.plugin.release>
+		<version.plugin.source>2.3</version.plugin.source>
+		<version.plugin.surefire>2.12</version.plugin.surefire>
+		<version.plugin.war>2.1.1</version.plugin.war>
+		
+		<version.javaee>1.0.0.Final</version.javaee>
+		<version.jstl>1.2</version.jstl>
+	</properties>
+
+	<dependencies>
+		<!-- JEE6 -->
+		<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-6.0</artifactId>
+			<version>${version.javaee}</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${version.jstl}</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${version.plugin.war}</version>
+				<configuration>
+					<outputDirectory>target</outputDirectory>
+					<warName>dl2</warName>
+				</configuration>
+			</plugin>
+
+			<!-- Release Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${version.plugin.release}</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
+			</plugin>
+
+			<!-- Surefire (Unit Tests) Plugin -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${version.plugin.surefire}</version>
+			</plugin>
+
+			<!-- Failsafe (Integration Tests) Plugin -->
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${version.plugin.failsafe}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<failIfNoTests>false</failIfNoTests>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- License Plugin -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>${version.plugin.license}</version>
+				<configuration>
+					<verbose>false</verbose>
+					<licenseName>lgpl_v3</licenseName>
+					<licenseFile>${basedir}/LICENSE</licenseFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>first</id>
+						<goals>
+							<goal>update-file-header</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<roots>
+								<root>src/main</root>
+								<root>src/test</root>
+							</roots>
+						</configuration>
+					</execution>
+					<execution>
+						<id>update-licenses</id>
+						<goals>
+							<goal>update-project-license</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- CheckStyle -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${version.plugin.checkstyle}</version>
+				<configuration>
+					<consoleOutput>true</consoleOutput>
+					<configLocation>configs/checkstyle.xml</configLocation>
+					<propertyExpansion>basedir=${project.basedir}</propertyExpansion>
+					<violationSeverity>warning</violationSeverity>
+					<includeTestSourceDirectory>false</includeTestSourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- PMD -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${version.plugin.pmd}</version>
+				<configuration>
+					<minimumTokens>100</minimumTokens>
+					<verbose>true</verbose>
+					<rulesets>
+						<ruleset>configs/pmd.xml</ruleset>
+					</rulesets>
+					<targetJdk>${maven.compiler.source}</targetJdk>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- FindBugs -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${version.plugin.findbugs}</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<threshold>Low</threshold>
+					<effort>Max</effort>
+					<includeFilterFile>configs/findbugs.xml</includeFilterFile>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- JavaDoc Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${version.plugin.javadoc}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Source Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${version.plugin.source}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											license-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.2,)
+										</versionRange>
+										<goals>
+											<goal>
+												update-file-header
+											</goal>
+											<goal>
+												update-project-license
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
