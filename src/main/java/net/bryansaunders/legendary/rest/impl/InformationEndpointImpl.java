@@ -41,9 +41,9 @@ import org.apache.camel.cdi.ContextName;
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
 public class InformationEndpointImpl implements IInformationEndpoint {
-    
+
     /**
-     * Camel Context
+     * Camel Context.
      */
     @Inject
     @ContextName(Resources.CAMEL_CONTEXT_NAME)
@@ -52,18 +52,20 @@ public class InformationEndpointImpl implements IInformationEndpoint {
     /**
      * Camel Producer Template.
      */
-    ProducerTemplate camelProducer;
-    
+    private ProducerTemplate camelProducer = null;
+
     /**
-     * Initialize the Producer. 
+     * Initialize the Producer.
+     * 
      * @throws Exception
+     *             Throws Exception if an error occurs starting the Producer Template.
      */
     @PostConstruct
     public void initProducer() throws Exception {
         this.camelProducer = this.context.createProducerTemplate();
         this.camelProducer.start();
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -71,6 +73,6 @@ public class InformationEndpointImpl implements IInformationEndpoint {
      */
     @Override
     public Response getInformation() {
-        return (Response) this.camelProducer.sendBody(CamelRouteBuilder.GET_INFORMATION_URI,ExchangePattern.InOut, "");
+        return (Response) this.camelProducer.sendBody(CamelRouteBuilder.GET_INFORMATION_URI, ExchangePattern.InOut, "");
     }
 }

@@ -54,6 +54,7 @@
 		<version.jaxrs-api>1.0.0.Final</version.jaxrs-api>
 		<version.javaee>1.0.0.Final</version.javaee>
 		<version.junit>4.11</version.junit>
+		<version.hibernate>4.3.0.Final</version.hibernate>
 		<version.mockito>1.9.0</version.mockito>
 		<version.powermock>1.4.12</version.powermock>
 		<version.restassured>1.6.2</version.restassured>
@@ -82,10 +83,17 @@
 			<version>${version.camel}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-servlet</artifactId>
-			<version>${version.camel}</version>
-		</dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jpa</artifactId>
+            <version>${version.camel}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jaxb</artifactId>
+            <version>${version.camel}</version>
+            <scope>provided</scope>
+        </dependency>
 
 		<!-- JEE7 -->
 		<dependency>
@@ -110,6 +118,13 @@
 			<artifactId>jboss-json-api_1.0_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- Bean Validation -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${version.hibernate}</version>
+		</dependency>
 
 		<!-- JAX-RS -->
 		<dependency>
@@ -117,6 +132,13 @@
 			<artifactId>jaxrs-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- JPA -->
+		<dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
 		<!-- Configuration -->
 		<dependency>

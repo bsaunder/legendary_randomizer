@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.service;
  * #L%
  */
 
-
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -36,7 +35,7 @@ import com.github.chrisruffalo.eeconfig.annotations.Source;
  * Retrieves Information about the Running Application.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
- *
+ * 
  */
 public class InformationService {
 
@@ -54,10 +53,12 @@ public class InformationService {
      */
     public Information getInformation() {
         final Information info = new Information();
-        info.setName(appConfig.getProperty("project.name"));
-        info.setDescription(appConfig.getProperty("project.description"));
-        info.setVersion(appConfig.getProperty("project.version"));
+        info.setName(this.appConfig.getProperty("project.name"));
+        info.setDescription(this.appConfig.getProperty("project.description"));
+        info.setVersion(this.appConfig.getProperty("project.version"));
 
         return info;
     }
 }
+
+

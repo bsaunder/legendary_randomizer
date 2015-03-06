@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.util;
  * #L%
  */
 
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -34,24 +33,30 @@ import org.apache.camel.Header;
  * Builds Response Objects.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
- *
+ * 
  */
 public class JaxRsResponseBuilder {
 
+    /**
+     * Header Name for Response Status.
+     */
     public static final String RESPONSE_STATUS_HEADER = "ResponseStatus";
 
     /**
      * Generates a Response Object from the Message. The Message Body becomes the Response Entity. The Status will be
      * set to the value of the "ResponseStatus" header or default to 200.
      * 
-     * @param pBody Message Body.
-     * @param pStatus "ResponseStatus" Header Value.
+     * @param pBody
+     *            Message Body.
+     * @param pStatus
+     *            "ResponseStatus" Header Value.
      * @return Response
      */
     @Handler
-    public Response generateResponse(@Body Object pBody, @Header(RESPONSE_STATUS_HEADER) Status pStatus) {
+    public Response generateResponse(@Body final Object pBody,
+            @Header(JaxRsResponseBuilder.RESPONSE_STATUS_HEADER) final Status pStatus) {
         Status status = pStatus;
-        if(status == null){
+        if (status == null) {
             status = Status.OK;
         }
         return Response.status(status).entity(pBody).build();

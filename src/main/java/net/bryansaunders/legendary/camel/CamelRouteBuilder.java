@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.camel;
  * #L%
  */
 
-
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 
@@ -33,11 +32,14 @@ import net.bryansaunders.legendary.util.Resources;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
 
+/**
+ * Builds the Camel Routes for the Application.
+ */
 @Startup
 @ApplicationScoped
 @ContextName(Resources.CAMEL_CONTEXT_NAME)
 public class CamelRouteBuilder extends RouteBuilder {
-    
+
     /**
      * URI for the Get Information Endpoint.
      */
@@ -45,14 +47,15 @@ public class CamelRouteBuilder extends RouteBuilder {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.camel.builder.RouteBuilder#configure()
      */
     @Override
     public void configure() throws Exception {
-        
+
         // GET rest/info
-        from(CamelRouteBuilder.GET_INFORMATION_URI)
-        .bean(InformationService.class, "getInformation")
-        .bean(JaxRsResponseBuilder.class, "generateResponse");
+        this.from(CamelRouteBuilder.GET_INFORMATION_URI).bean(InformationService.class, "getInformation")
+                .bean(JaxRsResponseBuilder.class, "generateResponse");
     }
 }
+
