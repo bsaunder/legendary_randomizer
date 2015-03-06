@@ -5,63 +5,159 @@
 	<artifactId>legendary_randomizer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+
 	<name>Legendary Card Randomizer</name>
 	<description>Generate a Random Setup for Marvel Legendary</description>
 	<url>https://github.com/bsaunder/legendary_randomizer</url>
+
 	<organization>
 		<name>Bryan Saunders</name>
 		<url>http://bryansaunders.net</url>
 	</organization>
+
 	<scm>
 		<url>https://github.com/bsaunder/legendary_randomizer</url>
 		<tag>HEAD</tag>
 		<connection>scm:git:ssh://github.com/bsaunder/legendary_randomizer.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/bsaunder/legendary_randomizer.git</developerConnection>
 	</scm>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/bsaunder/legendary_randomizer</url>
 	</issueManagement>
+
 	<ciManagement>
 		<system>Travis-CI</system>
 		<url>https://travis-ci.org/bsaunder/legendary_randomizer</url>
 	</ciManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
 
 		<version.plugin.checkstyle>2.8</version.plugin.checkstyle>
 		<version.plugin.failsafe>2.12.2</version.plugin.failsafe>
 		<version.plugin.findbugs>2.5.5</version.plugin.findbugs>
-		<version.plugin.javadoc>2.7</version.plugin.javadoc>
-		<version.plugin.license>1.2</version.plugin.license>
+		<version.plugin.javadoc>2.9.1</version.plugin.javadoc>
+		<version.plugin.license>1.8</version.plugin.license>
 		<version.plugin.pmd>2.7</version.plugin.pmd>
 		<version.plugin.release>2.5</version.plugin.release>
 		<version.plugin.source>2.3</version.plugin.source>
-		<version.plugin.surefire>2.12</version.plugin.surefire>
-		<version.plugin.war>2.1.1</version.plugin.war>
-		
+		<version.plugin.surefire>2.18.1</version.plugin.surefire>
+		<version.plugin.war>2.5</version.plugin.war>
+		<version.plugin.wildfly>1.0.2.Final</version.plugin.wildfly>
+
+		<version.camel>2.14.1</version.camel>
+		<version.eeconfig>1.4</version.eeconfig>
+		<version.jaxrs-api>1.0.0.Final</version.jaxrs-api>
 		<version.javaee>1.0.0.Final</version.javaee>
-		<version.jstl>1.2</version.jstl>
+		<version.junit>4.11</version.junit>
+		<version.mockito>1.9.0</version.mockito>
+		<version.powermock>1.4.12</version.powermock>
+		<version.restassured>1.6.2</version.restassured>
+		<version.resteasy>3.0.10.Final</version.resteasy>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.spec</groupId>
+				<artifactId>jboss-javaee-7.0</artifactId>
+				<version>${version.javaee}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
-		<!-- JEE6 -->
+
+		<!-- Camel -->
 		<dependency>
-			<groupId>org.jboss.spec</groupId>
-			<artifactId>jboss-javaee-6.0</artifactId>
-			<version>${version.javaee}</version>
-			<type>pom</type>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cdi</artifactId>
+			<scope>provided</scope>
+			<version>${version.camel}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-servlet</artifactId>
+			<version>${version.camel}</version>
+		</dependency>
+
+		<!-- JEE7 -->
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${version.jstl}</version>
+			<groupId>org.jboss.spec.javax.annotation</groupId>
+			<artifactId>jboss-annotations-api_1.2_spec</artifactId>
+			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.ejb</groupId>
+			<artifactId>jboss-ejb-api_3.2_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- JSON -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.json</groupId>
+			<artifactId>jboss-json-api_1.0_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- JAX-RS -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>jaxrs-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Configuration -->
+		<dependency>
+			<groupId>com.github.chrisruffalo</groupId>
+			<artifactId>ee-config</artifactId>
+			<version>${version.eeconfig}</version>
+		</dependency>
+
+		<!-- Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${version.mockito}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${version.powermock}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${version.powermock}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>${version.restassured}</version>
+		</dependency>
+
 	</dependencies>
-	
+
 	<build>
 
 		<resources>
@@ -84,7 +180,18 @@
 				<version>${version.plugin.war}</version>
 				<configuration>
 					<outputDirectory>target</outputDirectory>
-					<warName>dl2</warName>
+					<warName>legendary-randomizer</warName>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+
+			<!-- WildFly Plugin -->
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>${version.plugin.wildfly}</version>
+				<configuration>
+					<filename>legendary-randomizer.war</filename>
 				</configuration>
 			</plugin>
 
@@ -105,21 +212,10 @@
 			</plugin>
 
 			<!-- Failsafe (Integration Tests) Plugin -->
-			<plugin>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${version.plugin.failsafe}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-						<configuration>
-							<failIfNoTests>false</failIfNoTests>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			<!-- <plugin> <artifactId>maven-failsafe-plugin</artifactId> <version>${version.plugin.failsafe}</version> 
+				<executions> <execution> <goals> <goal>integration-test</goal> <goal>verify</goal> 
+				</goals> <configuration> <failIfNoTests>false</failIfNoTests> </configuration> 
+				</execution> </executions> </plugin> -->
 
 			<!-- License Plugin -->
 			<plugin>
@@ -252,7 +348,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
