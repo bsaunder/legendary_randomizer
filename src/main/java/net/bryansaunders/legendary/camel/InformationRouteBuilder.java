@@ -24,26 +24,36 @@ package net.bryansaunders.legendary.camel;
 
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.ws.rs.core.Response.Status;
 
 import net.bryansaunders.legendary.service.InformationService;
 import net.bryansaunders.legendary.util.JaxRsResponseBuilder;
 import net.bryansaunders.legendary.util.Resources;
 
+import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
 
 /**
- * Builds the Camel Routes for the Application.
+ * Builds the Information Related Camel Routes for the Application.
  */
 @Startup
 @ApplicationScoped
 @ContextName(Resources.CAMEL_CONTEXT_NAME)
-public class CamelRouteBuilder extends RouteBuilder {
+public class InformationRouteBuilder extends RouteBuilder {
 
     /**
      * URI for the Get Information Endpoint.
      */
     public static final String GET_INFORMATION_URI = "direct:get-rest-info";
+
+    /**
+     * Camel Context.
+     */
+    @Inject
+    @ContextName(Resources.CAMEL_CONTEXT_NAME)
+    private CamelContext camelContext;
 
     /*
      * (non-Javadoc)
@@ -53,9 +63,11 @@ public class CamelRouteBuilder extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
+        this.onException(Exception.class).setHeader(JaxRsResponseBuilder.RESPONSE_STATUS_HEADER)
+                .constant(Status.INTERNAL_SERVER_ERROR).setBody().simple("").bean(JaxRsResponseBuilder.class);
+
         // GET rest/info
-        this.from(CamelRouteBuilder.GET_INFORMATION_URI).bean(InformationService.class, "getInformation")
-                .bean(JaxRsResponseBuilder.class, "generateResponse");
+        this.from(InformationRouteBuilder.GET_INFORMATION_URI).bean(InformationService.class, "getInformation").bean(
+                JaxRsResponseBuilder.class, "generateResponse");
     }
 }
-

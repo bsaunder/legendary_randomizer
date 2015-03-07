@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.model;
  * #L%
  */
 
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -175,7 +174,7 @@ public class LegendaryEntity {
      * @param pName
      *            the name to set
      */
-    public void setName(String pName) {
+    public void setName(final String pName) {
         this.name = pName;
     }
 
@@ -194,7 +193,7 @@ public class LegendaryEntity {
      * @param pCardSet
      *            the cardSet to set
      */
-    public void setCardSet(CardSet pCardSet) {
+    public void setCardSet(final CardSet pCardSet) {
         this.cardSet = pCardSet;
     }
 
@@ -214,6 +213,26 @@ public class LegendaryEntity {
      */
     public Integer getVersion() {
         return this.version;
+    }
+
+    /**
+     * Set the id.
+     * 
+     * @param pId
+     *            the id to set
+     */
+    public void setId(final Integer pId) {
+        this.id = pId;
+    }
+
+    /**
+     * Set the version.
+     * 
+     * @param pVersion
+     *            the version to set
+     */
+    public void setVersion(final Integer pVersion) {
+        this.version = pVersion;
     }
 
 }

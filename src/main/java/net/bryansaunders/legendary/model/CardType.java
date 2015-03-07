@@ -28,7 +28,7 @@ package net.bryansaunders.legendary.model;
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
-public enum Class {
+public enum CardType {
 
     /**
      * Strength.
@@ -66,7 +66,7 @@ public enum Class {
      * @param pDescription
      *            the description to set
      */
-    Class(final String pDescription) {
+    CardType(final String pDescription) {
         this.description = pDescription;
     }
 

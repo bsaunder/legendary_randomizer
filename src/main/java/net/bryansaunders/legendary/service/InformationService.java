@@ -24,9 +24,13 @@ package net.bryansaunders.legendary.service;
 
 import java.util.Properties;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import net.bryansaunders.legendary.dao.impl.GenericDaoImpl;
 import net.bryansaunders.legendary.model.Information;
+
+import org.jboss.logging.Logger;
 
 import com.github.chrisruffalo.eeconfig.annotations.Configuration;
 import com.github.chrisruffalo.eeconfig.annotations.Source;
@@ -37,7 +41,13 @@ import com.github.chrisruffalo.eeconfig.annotations.Source;
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
+@Stateless
 public class InformationService {
+    
+    /**
+     * Logger.
+     */
+    private final Logger logger = Logger.getLogger(GenericDaoImpl.class);
 
     /**
      * Application Configuration.
@@ -56,6 +66,8 @@ public class InformationService {
         info.setName(this.appConfig.getProperty("project.name"));
         info.setDescription(this.appConfig.getProperty("project.description"));
         info.setVersion(this.appConfig.getProperty("project.version"));
+        
+        this.logger.debug("Returning Information: " + info);
 
         return info;
     }

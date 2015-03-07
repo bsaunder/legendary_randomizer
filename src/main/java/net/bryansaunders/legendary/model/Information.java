@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.model;
  * #L%
  */
 
-
 /**
  * Information Object that contains Application Information.
  * 
@@ -101,6 +100,17 @@ public class Information {
      */
     public void setVersion(final String pVersion) {
         this.version = pVersion;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "Information [name=" + this.name + ", description=" + this.description + ", version=" + this.version
+                + "]";
     }
 
 }

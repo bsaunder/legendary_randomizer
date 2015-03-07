@@ -26,7 +26,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
-import net.bryansaunders.legendary.camel.CamelRouteBuilder;
+import net.bryansaunders.legendary.camel.InformationRouteBuilder;
 import net.bryansaunders.legendary.rest.IInformationEndpoint;
 import net.bryansaunders.legendary.util.Resources;
 
@@ -73,6 +73,7 @@ public class InformationEndpointImpl implements IInformationEndpoint {
      */
     @Override
     public Response getInformation() {
-        return (Response) this.camelProducer.sendBody(CamelRouteBuilder.GET_INFORMATION_URI, ExchangePattern.InOut, "");
+        return (Response) this.camelProducer.sendBody(InformationRouteBuilder.GET_INFORMATION_URI,
+                ExchangePattern.InOut, "");
     }
 }

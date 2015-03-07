@@ -1,5 +1,9 @@
 package net.bryansaunders.legendary.util;
 
+import javax.enterprise.inject.Produces;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /*
  * #%L
  * Legendary Card Randomizer
@@ -22,12 +26,11 @@ package net.bryansaunders.legendary.util;
  * #L%
  */
 
-
 /**
  * Resources Class.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
- *
+ * 
  */
 public abstract class Resources {
 
@@ -35,5 +38,12 @@ public abstract class Resources {
      * Camel Context Name.
      */
     public static final String CAMEL_CONTEXT_NAME = "legendaryCamelContext";
-    
+
+    /**
+     * Entity Manager.
+     */
+    @Produces
+    @PersistenceContext
+    private EntityManager entityManager;
+
 }
