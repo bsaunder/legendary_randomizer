@@ -54,31 +54,31 @@ public class Hero extends LegendaryEntity {
      * Common Card Types.
      */
     @NotNull
-    @ElementCollection(targetClass = CardType.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = CardClass.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "hero_commonType")
     @Column(name = "commonType")
-    private Set<CardType> commonTypes;
+    private Set<CardClass> commonTypes;
 
     /**
      * Uncommon Card Types.
      */
     @NotNull
-    @ElementCollection(targetClass = CardType.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = CardClass.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "hero_uncommonType")
     @Column(name = "uncommonType")
-    private Set<CardType> uncommonTypes;
+    private Set<CardClass> uncommonTypes;
 
     /**
      * Rare Card Types.
      */
     @NotNull
-    @ElementCollection(targetClass = CardType.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = CardClass.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "hero_rareType")
     @Column(name = "rareType")
-    private Set<CardType> rareTypes;
+    private Set<CardClass> rareTypes;
 
     /**
      * Get the affiliation.
@@ -104,7 +104,7 @@ public class Hero extends LegendaryEntity {
      * 
      * @return the commonTypes
      */
-    public Set<CardType> getCommonTypes() {
+    public Set<CardClass> getCommonTypes() {
         return this.commonTypes;
     }
 
@@ -114,7 +114,7 @@ public class Hero extends LegendaryEntity {
      * @param pCommonTypes
      *            the commonTypes to set
      */
-    public void setCommonTypes(final Set<CardType> pCommonTypes) {
+    public void setCommonTypes(final Set<CardClass> pCommonTypes) {
         this.commonTypes = pCommonTypes;
     }
 
@@ -123,7 +123,7 @@ public class Hero extends LegendaryEntity {
      * 
      * @return the uncommonTypes
      */
-    public Set<CardType> getUncommonTypes() {
+    public Set<CardClass> getUncommonTypes() {
         return this.uncommonTypes;
     }
 
@@ -133,7 +133,7 @@ public class Hero extends LegendaryEntity {
      * @param pUncommonTypes
      *            the uncommonTypes to set
      */
-    public void setUncommonTypes(final Set<CardType> pUncommonTypes) {
+    public void setUncommonTypes(final Set<CardClass> pUncommonTypes) {
         this.uncommonTypes = pUncommonTypes;
     }
 
@@ -142,7 +142,7 @@ public class Hero extends LegendaryEntity {
      * 
      * @return the rareTypes
      */
-    public Set<CardType> getRareTypes() {
+    public Set<CardClass> getRareTypes() {
         return this.rareTypes;
     }
 
@@ -152,7 +152,7 @@ public class Hero extends LegendaryEntity {
      * @param pRareTypes
      *            the rareTypes to set
      */
-    public void setRareTypes(final Set<CardType> pRareTypes) {
+    public void setRareTypes(final Set<CardClass> pRareTypes) {
         this.rareTypes = pRareTypes;
     }
 

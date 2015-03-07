@@ -30,45 +30,46 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
-import net.bryansaunders.legendary.model.Hero;
-import net.bryansaunders.legendary.rest.IHeroEndpoint;
-import net.bryansaunders.legendary.service.HeroService;
+import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.rest.ILeadableEndpoint;
+import net.bryansaunders.legendary.service.LeadableService;
 
 /**
- * @see IHeroEndpoint
+ * @see ILeadableEndpoint
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
+ * 
  */
-public class HeroEndpointImpl implements IHeroEndpoint {
+public class LeadableEndpointImpl implements ILeadableEndpoint {
 
     /**
-     * Hero Service.
+     * Leadable Service.
      */
     @Inject
-    private HeroService heroService;
+    private LeadableService leadableService;
 
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IHeroEndpoint#getAllHeroes()
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#getAllLeadables()
      */
     @Override
-    public Response getAllHeroes() {
-        final List<Hero> heroes = this.heroService.getAllHeroes();
-        return Response.status(Status.OK).entity(heroes).build();
+    public Response getAllLeadables() {
+        final List<Leadable> leadablees = this.leadableService.getAllLeadables();
+        return Response.status(Status.OK).entity(leadablees).build();
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IHeroEndpoint#getHeroById(java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#getLeadableById(java.lang.Integer)
      */
     @Override
-    public Response getHeroById(final Integer id) {
+    public Response getLeadableById(final Integer id) {
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         try {
-            final Hero hero = this.heroService.getHero(id);
-            responseBuilder = responseBuilder.entity(hero);
+            final Leadable leadable = this.leadableService.getLeadable(id);
+            responseBuilder = responseBuilder.entity(leadable);
         } catch (final NoResultException e) {
             responseBuilder = responseBuilder.status(Status.NOT_FOUND);
         }
@@ -79,24 +80,24 @@ public class HeroEndpointImpl implements IHeroEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IHeroEndpoint#addHero(net.bryansaunders.legendary.model.Hero)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#addLeadable(net.bryansaunders.legendary.model.Leadable)
      */
     @Override
-    public Response addHero(final Hero hero) {
-        final Hero savedHero = this.heroService.saveHero(hero);
-        return Response.status(Status.OK).entity(savedHero).build();
+    public Response addLeadable(final Leadable leadable) {
+        final Leadable savedLeadable = this.leadableService.saveLeadable(leadable);
+        return Response.status(Status.OK).entity(savedLeadable).build();
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IHeroEndpoint#deleteHero(java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#deleteLeadable(java.lang.Integer)
      */
     @Override
-    public Response deleteHero(final Integer id) {
+    public Response deleteLeadable(final Integer id) {
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         try {
-            this.heroService.deleteHero(id);
+            this.leadableService.deleteLeadable(id);
         } catch (final NoResultException e) {
             responseBuilder = responseBuilder.status(Status.NOT_FOUND);
         }
@@ -107,14 +108,14 @@ public class HeroEndpointImpl implements IHeroEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IHeroEndpoint#getRandomHeroes(java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#getRandomLeadables(java.lang.Integer)
      */
     @Override
-    public Response getRandomHeroes(final Integer count) {
+    public Response getRandomLeadables(final Integer count) {
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         try {
-            final List<Hero> heroes = this.heroService.getRandomHeroes(count);
-            responseBuilder = responseBuilder.entity(heroes);
+            final List<Leadable> leadablees = this.leadableService.getRandomLeadables(count);
+            responseBuilder = responseBuilder.entity(leadablees);
         } catch (final IllegalArgumentException e) {
             responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
         }

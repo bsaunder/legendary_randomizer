@@ -22,83 +22,83 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import net.bryansaunders.legendary.model.Hero;
+import net.bryansaunders.legendary.model.Leadable;
 
 /**
- * Hero Service for working with Heros.
+ * Leadable Service for working with Leadables.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
-@Path("/hero")
-public interface IHeroEndpoint {
+@Path("/leadable")
+public interface ILeadableEndpoint {
 
     /**
-     * Returns a list of all of the Heroes in the System.
+     * Returns a list of all of the Leadables in the System.
      * 
      * @return JSON String
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Response getAllHeroes();
+    Response getAllLeadables();
 
     /**
-     * Returns the Specified Hero.
+     * Returns the Specified Leadable.
      * 
      * @param id
-     *            Hero ID.
+     *            Leadable ID.
      * 
      * @return JSON String
      */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response getHeroById(@PathParam("id") Integer id);
+    Response getLeadableById(@PathParam("id") Integer id);
 
     /**
-     * Adds the Supplied Hero to the Database. Returns the Updated Hero.
+     * Adds the Supplied Leadable to the Database. Returns the Updated Leadable.
      * 
-     * @param hero
-     *            Hero to Add.
+     * @param leadable
+     *            Leadable to Add.
      * @return JSON String
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    Response addHero(Hero hero);
+    Response addLeadable(Leadable leadable);
 
     /**
-     * Delete the Specified Hero.
+     * Delete the Specified Leadable.
      * 
      * @param id
-     *            Hero ID.
+     *            Leadable ID.
      * @return JSON String
      */
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response deleteHero(@PathParam("id") Integer id);
+    Response deleteLeadable(@PathParam("id") Integer id);
 
     /**
-     * Returns a random number of Heroes.
+     * Returns a random number of Leadablees.
      * 
      * @param count
-     *            Hero count.
+     *            Leadable count.
      * 
      * @return JSON String
      */
     @GET
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
-    Response getRandomHeroes(@PathParam("count") Integer count);
+    Response getRandomLeadables(@PathParam("count") Integer count);
 }

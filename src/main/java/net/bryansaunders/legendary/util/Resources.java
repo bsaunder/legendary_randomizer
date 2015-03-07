@@ -32,7 +32,7 @@ import javax.persistence.PersistenceContext;
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
-public abstract class Resources {
+public final class Resources {
 
     /**
      * Camel Context Name.
@@ -45,5 +45,12 @@ public abstract class Resources {
     @Produces
     @PersistenceContext
     private EntityManager entityManager;
+
+    /**
+     * Private Constructor.
+     */
+    private Resources() {
+        // Dont Instantiate Me Bro.
+    }
 
 }

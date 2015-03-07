@@ -1,4 +1,4 @@
-package net.bryansaunders.legendary.rest.impl;
+package net.bryansaunders.legendary.model;
 
 /*
  * #%L
@@ -22,35 +22,22 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
-import javax.inject.Inject;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import net.bryansaunders.legendary.model.Information;
-import net.bryansaunders.legendary.rest.IInformationEndpoint;
-import net.bryansaunders.legendary.service.InformationService;
 
 /**
- * @see IInformationEndpoint
+ * Types of Leadable Cards.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
+ * 
  */
-public class InformationEndpointImpl implements IInformationEndpoint {
+public enum LeadableType {
     
     /**
-     * Information Service.
+     * Villains.
      */
-    @Inject
-    private InformationService infoService;
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see net.bryansaunders.dl2.service.rest.InfoService#getInformation()
+    VILLAIN,
+    
+    /**
+     * Henchman
      */
-    @Override
-    public Response getInformation() {
-        Information info = this.infoService.getInformation();
-        return Response.status(Status.OK).entity(info).build();
-    }
+    HENCHMAN;
 }

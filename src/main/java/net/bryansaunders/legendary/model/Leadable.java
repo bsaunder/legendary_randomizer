@@ -1,4 +1,4 @@
-package net.bryansaunders.legendary.rest.impl;
+package net.bryansaunders.legendary.model;
 
 /*
  * #%L
@@ -22,35 +22,52 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
-import javax.inject.Inject;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
-import net.bryansaunders.legendary.model.Information;
-import net.bryansaunders.legendary.rest.IInformationEndpoint;
-import net.bryansaunders.legendary.service.InformationService;
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 /**
- * @see IInformationEndpoint
+ * Represents a Charaacters that is Leadable by a Mastermind.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
+ * 
  */
-public class InformationEndpointImpl implements IInformationEndpoint {
-    
+@Entity
+public abstract class Leadable extends LegendaryEntity {
+
     /**
-     * Information Service.
+     * Leadable Type.
      */
-    @Inject
-    private InformationService infoService;
+    @NotNull
+    private LeadableType type;
+
+    /**
+     * Get the type.
+     * 
+     * @return the type
+     */
+    public LeadableType getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type.
+     * 
+     * @param pType
+     *            the type to set
+     */
+    public void setType(LeadableType pType) {
+        this.type = pType;
+    }
 
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.dl2.service.rest.InfoService#getInformation()
+     * @see java.lang.Object#toString()
      */
     @Override
-    public Response getInformation() {
-        Information info = this.infoService.getInformation();
-        return Response.status(Status.OK).entity(info).build();
+    public String toString() {
+        return "Leadable [type=" + this.type + ", name=" + this.getName() + "]";
     }
+
 }

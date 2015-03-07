@@ -96,7 +96,18 @@ public class HeroService {
      *            Number of Heroes.
      * @return List of Heroes
      */
-    public List<Hero> getRandomHeroes(Integer count) {
+    public List<Hero> getRandomHeroes(final Integer count) {
         return this.heroDao.getRandom(count);
+    }
+
+    /**
+     * Saves the Provided Hero.
+     * 
+     * @param hero
+     *            Hero to Save
+     * @return Saved Hero
+     */
+    public Hero saveHero(final Hero hero) {
+        return this.heroDao.save(hero);
     }
 }
