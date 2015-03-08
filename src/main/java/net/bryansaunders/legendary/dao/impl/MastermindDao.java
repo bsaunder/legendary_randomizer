@@ -1,4 +1,4 @@
-package net.bryansaunders.legendary.dao;
+package net.bryansaunders.legendary.dao.impl;
 
 /*
  * #%L
@@ -29,33 +29,32 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import net.bryansaunders.legendary.dao.impl.GenericDaoImpl;
-import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.Mastermind;
 
 /**
- * Leadable DAO.
+ * Mastermind DAO.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
-public class LeadableDao extends GenericDaoImpl<Leadable> {
+public class MastermindDao extends GenericDaoImpl<Mastermind> {
 
     /**
-     * Gets Random Leadables.
+     * Gets Random Masterminds.
      * 
      * @param count
-     *            Number of Leadables.
-     * @return List of Leadables.
+     *            Number of Masterminds.
+     * @return List of Masterminds.
      */
-    public List<Leadable> getRandom(final Integer count) {
-        final List<Leadable> leadables = new LinkedList<Leadable>();
+    public List<Mastermind> getRandom(final Integer count) {
+        final List<Mastermind> masterminds = new LinkedList<Mastermind>();
 
         // Get All IDs
-        final Query query = this.getEntityManager().createQuery("SELECT DISTINCT l.id FROM Leadable l");
+        final Query query = this.getEntityManager().createQuery("SELECT DISTINCT m.id FROM Mastermind m");
         final List<?> idList = query.getResultList();
 
         if (idList.size() < count) {
-            throw new IllegalArgumentException("Not Enough Leadables");
+            throw new IllegalArgumentException("Not Enough Masterminds");
         }
 
         // Shuffle
@@ -64,10 +63,10 @@ public class LeadableDao extends GenericDaoImpl<Leadable> {
         // Get Heroes
         for (int i = 0; i < count; i++) {
             final Integer id = (Integer) idList.get(i);
-            final Leadable leadable = this.get(id);
-            leadables.add(leadable);
+            final Mastermind mastermind = this.get(id);
+            masterminds.add(mastermind);
         }
 
-        return leadables;
+        return masterminds;
     }
 }

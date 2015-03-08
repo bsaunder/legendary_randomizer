@@ -22,42 +22,69 @@ package net.bryansaunders.legendary.model;
  * #L%
  */
 
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 /**
- * Represents a Charaacters that is Leadable by a Mastermind.
+ * Mastermind.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
 @Entity
-public class Leadable extends LegendaryEntity {
+public class Mastermind extends LegendaryEntity {
 
     /**
-     * Leadable Type.
+     * The Mastermind Always Leads these Groups in Setup.
+     */
+    @OneToMany
+    private Set<Leadable> alwaysLeads;
+
+    /**
+     * Attack Value.
      */
     @NotNull
-    private LeadableType type;
+    private String attack;
 
     /**
-     * Get the type.
+     * Get the alwaysLeads.
      * 
-     * @return the type
+     * @return the alwaysLeads
      */
-    public LeadableType getType() {
-        return this.type;
+    public Set<Leadable> getAlwaysLeads() {
+        return this.alwaysLeads;
     }
 
     /**
-     * Set the type.
+     * Set the alwaysLeads.
      * 
-     * @param pType
-     *            the type to set
+     * @param pAlwaysLeads
+     *            the alwaysLeads to set
      */
-    public void setType(LeadableType pType) {
-        this.type = pType;
+    public void setAlwaysLeads(final Set<Leadable> pAlwaysLeads) {
+        this.alwaysLeads = pAlwaysLeads;
+    }
+
+    /**
+     * Get the attack.
+     * 
+     * @return the attack
+     */
+    public String getAttack() {
+        return this.attack;
+    }
+
+    /**
+     * Set the attack.
+     * 
+     * @param pAttack
+     *            the attack to set
+     */
+    public void setAttack(final String pAttack) {
+        this.attack = pAttack;
     }
 
     /*
@@ -67,7 +94,8 @@ public class Leadable extends LegendaryEntity {
      */
     @Override
     public String toString() {
-        return "Leadable [type=" + this.type + ", name=" + this.getName() + "]";
+        return "Mastermind [name=" + this.getName() + ", alwaysLeads=" + this.alwaysLeads + ", attack=" + this.attack
+                + "]";
     }
 
 }

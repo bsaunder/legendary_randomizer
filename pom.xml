@@ -49,7 +49,6 @@
 		<version.plugin.war>2.5</version.plugin.war>
 		<version.plugin.wildfly>1.0.2.Final</version.plugin.wildfly>
 
-		<version.camel>2.14.1</version.camel>
 		<version.eeconfig>1.4</version.eeconfig>
 		<version.jaxrs-api>1.0.0.Final</version.jaxrs-api>
 		<version.javaee>1.0.0.Final</version.javaee>
@@ -75,26 +74,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-
-		<!-- Camel -->
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-cdi</artifactId>
-			<scope>provided</scope>
-			<version>${version.camel}</version>
-		</dependency>
-		<dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jpa</artifactId>
-            <version>${version.camel}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jaxb</artifactId>
-            <version>${version.camel}</version>
-            <scope>provided</scope>
-        </dependency>
 
 		<!-- JEE7 -->
 		<dependency>

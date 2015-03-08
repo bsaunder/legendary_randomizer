@@ -1,4 +1,4 @@
-package net.bryansaunders.legendary.dao;
+package net.bryansaunders.legendary.dao.impl;
 
 /*
  * #%L
@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import net.bryansaunders.legendary.dao.impl.GenericDaoImpl;
 import net.bryansaunders.legendary.model.Hero;
 
 /**

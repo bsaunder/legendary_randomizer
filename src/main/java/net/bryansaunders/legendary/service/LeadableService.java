@@ -28,7 +28,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import net.bryansaunders.legendary.dao.LeadableDao;
+import net.bryansaunders.legendary.dao.impl.LeadableDao;
 import net.bryansaunders.legendary.model.Leadable;
 
 /**

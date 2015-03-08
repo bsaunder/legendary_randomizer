@@ -27,7 +27,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import net.bryansaunders.legendary.dao.HeroDao;
+import net.bryansaunders.legendary.dao.impl.HeroDao;
 import net.bryansaunders.legendary.model.Hero;
 
 /**
