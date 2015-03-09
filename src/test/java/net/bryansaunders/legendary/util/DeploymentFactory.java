@@ -76,6 +76,8 @@ public class DeploymentFactory {
 
         // Setup CDI/Persistence/Web
         war.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        war.addAsWebInfResource(new File("src/main/webapp/WEB-INF/ejb-jar.xml"), "ejb-jar.xml");
+        war.addAsWebInfResource(new File("src/main/webapp/WEB-INF/jboss-deployment-structure.xml"), "jboss-deployment-structure.xml");
         war.addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml");
 
         return war;

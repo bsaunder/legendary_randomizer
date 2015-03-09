@@ -23,6 +23,11 @@ package net.bryansaunders.legendary.rest;
  */
 
 
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
+
 import net.bryansaunders.legendary.util.DeploymentFactory;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -37,6 +42,12 @@ import org.junit.Ignore;
  */
 @Ignore
 public abstract class RestApiTest {
+    
+    @PersistenceContext
+    EntityManager em;
+    
+    @Inject
+    UserTransaction utx;
 
     /**
      * Root URL.

@@ -45,6 +45,11 @@ import javax.validation.constraints.NotNull;
 public class Hero extends LegendaryEntity {
 
     /**
+     * Serial Version ID.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * Team.
      */
     @NotNull

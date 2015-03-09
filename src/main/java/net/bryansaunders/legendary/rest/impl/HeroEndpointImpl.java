@@ -24,6 +24,7 @@ package net.bryansaunders.legendary.rest.impl;
 
 import java.util.List;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.ws.rs.core.Response;
@@ -83,8 +84,17 @@ public class HeroEndpointImpl implements IHeroEndpoint {
      */
     @Override
     public Response addHero(final Hero hero) {
-        final Hero savedHero = this.heroService.saveHero(hero);
-        return Response.status(Status.OK).entity(savedHero).build();
+          
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        try {
+            final Hero savedHero = this.heroService.saveHero(hero);
+            responseBuilder = responseBuilder.entity(savedHero);
+        } catch (final EJBTransactionRolledbackException e) {
+            // Really should Handle this Better.. Its for Non-Unique Names
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+        }
+
+        return responseBuilder.build();
     }
 
     /*

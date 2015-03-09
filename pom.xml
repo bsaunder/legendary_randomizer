@@ -51,8 +51,10 @@
 		<version.plugin.wildfly>1.0.2.Final</version.plugin.wildfly>
 
 		<version.arquillian>1.1.7.Final</version.arquillian>
-		<version.arquillian.wildfly>8.2.0.Final</version.arquillian.wildfly>
+		<version.arquillian.container>1.0.0.Alpha5</version.arquillian.container>
+		<version.arquillian.persistence>1.0.0.Alpha7</version.arquillian.persistence>
 		<version.arquillian.transaction>1.0.1.Final</version.arquillian.transaction>
+		<version.arquillian.wildfly>8.2.0.Final</version.arquillian.wildfly>
 		<version.eeconfig>1.4</version.eeconfig>
 		<version.jaxrs-api>1.0.0.Final</version.jaxrs-api>
 		<version.javaee>1.0.0.Final</version.javaee>
@@ -125,7 +127,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Bean Validation -->
+		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -200,16 +202,12 @@
 			<artifactId>rest-assured</artifactId>
 			<version>${version.restassured}</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.wildfly</groupId> <artifactId>wildfly-arquillian-container-embedded</artifactId> 
-			<version>${version.arquillian.wildfly}</version> </dependency> -->
 		<dependency>
 			<groupId>org.wildfly.arquillian</groupId>
 			<artifactId>wildfly-arquillian-container-remote</artifactId>
-			<version>1.0.0.Alpha5</version>
+			<version>${version.arquillian.container}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.wildfly</groupId> <artifactId>wildfly-embedded</artifactId> 
-			<version>${version.arquillian.wildfly}</version> </dependency> -->
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
 			<artifactId>arquillian-junit-container</artifactId>
@@ -259,15 +257,6 @@
 					<filename>legendary-randomizer.war</filename>
 				</configuration>
 			</plugin>
-
-			<!-- Dependency Plugin to Get WildFly Distro for Testing -->
-			<!-- <plugin> <artifactId>maven-dependency-plugin</artifactId> <executions> 
-				<execution> <id>unpack</id> <phase>process-test-classes</phase> <goals> <goal>unpack</goal> 
-				</goals> <configuration> <artifactItems> <artifactItem> <groupId>org.wildfly</groupId> 
-				<artifactId>wildfly-dist</artifactId> <version>${version.wildfly}</version> 
-				<type>zip</type> <overWrite>false</overWrite> <outputDirectory>target</outputDirectory> 
-				</artifactItem> </artifactItems> </configuration> </execution> </executions> 
-				</plugin> -->
 
 			<!-- Release Plugin -->
 			<plugin>

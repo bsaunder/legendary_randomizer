@@ -30,6 +30,14 @@
 			<exception-class>javax.persistence.NoResultException</exception-class>
 			<rollback>true</rollback>
 		</application-exception>
+		<application-exception>
+			<exception-class>javax.ejb.EJBTransactionRolledbackException</exception-class>
+			<rollback>true</rollback>
+		</application-exception>
+		<application-exception>
+			<exception-class>java.lang.IllegalArgumentException</exception-class>
+			<rollback>true</rollback>
+		</application-exception>
 	</assembly-descriptor>
 
 </ejb-jar>

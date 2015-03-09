@@ -34,6 +34,11 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 public class Leadable extends LegendaryEntity {
+    
+    /**
+     * Serial Version ID.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Leadable Type.

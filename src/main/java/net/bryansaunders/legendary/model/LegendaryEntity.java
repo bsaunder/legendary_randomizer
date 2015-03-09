@@ -22,6 +22,7 @@ package net.bryansaunders.legendary.model;
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -34,6 +35,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
@@ -44,7 +46,13 @@ import javax.validation.constraints.NotNull;
  * 
  */
 @MappedSuperclass
-public class LegendaryEntity {
+public class LegendaryEntity implements Serializable {
+
+    /**
+     * Serial Version ID.
+     */
+    @Transient
+    private static final long serialVersionUID = 1L;
 
     /**
      * Id. Auto-Generated.
@@ -78,7 +86,7 @@ public class LegendaryEntity {
      * Entity Name.
      */
     @NotNull
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     /**

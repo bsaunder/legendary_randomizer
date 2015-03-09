@@ -27,6 +27,10 @@
 
 	<defaultProtocol type="Servlet 3.0" />
 
+	<engine>
+		<property name="deploymentExportPath">target/testDeployments</property>
+	</engine>
+
 	<container qualifier="widlfly-remote" default="true">
 		<configuration>
 			<property name="managementAddress">127.0.0.1</property>
@@ -36,4 +40,10 @@
 		</configuration>
 	</container>
 	
+	<extension qualifier="persistence">
+        <property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
+        <!-- <property name="dumpData">true</property> -->
+        <!-- <property name="dumpDirectory">/tmp/showcase</property> -->
+    </extension>
+
 </arquillian>
