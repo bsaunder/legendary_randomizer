@@ -56,7 +56,7 @@ public class Leadable extends LegendaryEntity {
      * @param pType
      *            the type to set
      */
-    public void setType(LeadableType pType) {
+    public void setType(final LeadableType pType) {
         this.type = pType;
     }
 

@@ -1,8 +1,4 @@
-package net.bryansaunders.legendary.util;
-
-import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+package net.bryansaunders.legendary.rest;
 
 /*
  * #%L
@@ -26,26 +22,34 @@ import javax.persistence.PersistenceContext;
  * #L%
  */
 
+
+import net.bryansaunders.legendary.util.DeploymentFactory;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Ignore;
+
 /**
- * Resources Class.
+ * Base Test class for REST API Tests.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
-public final class Resources {
+@Ignore
+public abstract class RestApiTest {
 
     /**
-     * Entity Manager.
+     * Root URL.
      */
-    @Produces
-    @PersistenceContext
-    private EntityManager entityManager;
+    protected static final String URL_ROOT = "http://localhost:8080/legendary_randomizer_test/rest";
 
     /**
-     * Private Constructor.
+     * Creates Arquillian Deployment Container.
+     * 
+     * @return deployment container
      */
-    private Resources() {
-        // Dont Instantiate Me Bro.
+    @Deployment
+    public static WebArchive createDeployment() {
+        return DeploymentFactory.getRestApiDeployment();
     }
-
 }
