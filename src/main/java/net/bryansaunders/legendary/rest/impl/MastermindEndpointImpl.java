@@ -24,6 +24,7 @@ package net.bryansaunders.legendary.rest.impl;
 
 import java.util.List;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.ws.rs.core.Response;
@@ -51,7 +52,8 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#getAllMasterminds()
+     * @see
+     * net.bryansaunders.legendary.rest.IMastermindEndpoint#getAllMasterminds()
      */
     @Override
     public Response getAllMasterminds() {
@@ -62,7 +64,9 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#getMastermindById(java.lang.Integer)
+     * @see
+     * net.bryansaunders.legendary.rest.IMastermindEndpoint#getMastermindById
+     * (java.lang.Integer)
      */
     @Override
     public Response getMastermindById(final Integer id) {
@@ -81,18 +85,29 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
      * (non-Javadoc)
      * 
      * @see
-     * net.bryansaunders.legendary.rest.IMastermindEndpoint#addMastermind(net.bryansaunders.legendary.model.Mastermind)
+     * net.bryansaunders.legendary.rest.IMastermindEndpoint#addMastermind(net
+     * .bryansaunders.legendary.model.Mastermind)
      */
     @Override
     public Response addMastermind(final Mastermind mastermind) {
-        final Mastermind savedMastermind = this.mastermindService.saveMastermind(mastermind);
-        return Response.status(Status.OK).entity(savedMastermind).build();
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        try {
+            final Mastermind savedMastermind = this.mastermindService.saveMastermind(mastermind);
+            responseBuilder = responseBuilder.entity(savedMastermind);
+        } catch (final EJBTransactionRolledbackException e) {
+            // Really should Handle this Better.. Its for Non-Unique Names
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+        }
+
+        return responseBuilder.build();
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#deleteMastermind(java.lang.Integer)
+     * @see
+     * net.bryansaunders.legendary.rest.IMastermindEndpoint#deleteMastermind
+     * (java.lang.Integer)
      */
     @Override
     public Response deleteMastermind(final Integer id) {
@@ -109,7 +124,9 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#getRandomMasterminds(java.lang.Integer)
+     * @see
+     * net.bryansaunders.legendary.rest.IMastermindEndpoint#getRandomMasterminds
+     * (java.lang.Integer)
      */
     @Override
     public Response getRandomMasterminds(final Integer count) {

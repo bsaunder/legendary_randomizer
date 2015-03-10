@@ -24,6 +24,7 @@ package net.bryansaunders.legendary.rest.impl;
 
 import java.util.List;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.ws.rs.core.Response;
@@ -62,7 +63,9 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#getLeadableById(java.lang.Integer)
+     * @see
+     * net.bryansaunders.legendary.rest.ILeadableEndpoint#getLeadableById(java
+     * .lang.Integer)
      */
     @Override
     public Response getLeadableById(final Integer id) {
@@ -80,18 +83,29 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#addLeadable(net.bryansaunders.legendary.model.Leadable)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#addLeadable(net.
+     * bryansaunders.legendary.model.Leadable)
      */
     @Override
     public Response addLeadable(final Leadable leadable) {
-        final Leadable savedLeadable = this.leadableService.saveLeadable(leadable);
-        return Response.status(Status.OK).entity(savedLeadable).build();
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        try {
+            final Leadable savedLeadable = this.leadableService.saveLeadable(leadable);
+            responseBuilder = responseBuilder.entity(savedLeadable);
+        } catch (final EJBTransactionRolledbackException e) {
+            // Really should Handle this Better.. Its for Non-Unique Names
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+        }
+
+        return responseBuilder.build();
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#deleteLeadable(java.lang.Integer)
+     * @see
+     * net.bryansaunders.legendary.rest.ILeadableEndpoint#deleteLeadable(java
+     * .lang.Integer)
      */
     @Override
     public Response deleteLeadable(final Integer id) {
@@ -108,7 +122,9 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#getRandomLeadables(java.lang.Integer)
+     * @see
+     * net.bryansaunders.legendary.rest.ILeadableEndpoint#getRandomLeadables
+     * (java.lang.Integer)
      */
     @Override
     public Response getRandomLeadables(final Integer count) {

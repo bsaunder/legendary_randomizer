@@ -96,7 +96,23 @@ public class HeroEndpointImplTest extends RestApiTest {
 
     @Test
     public void addHero() {
-        this.createAndStoreHero();
+    	final Hero hero = this.createHero();
+        
+        Hero savedHero = RestAssured.given()
+            .contentType(ContentType.JSON)
+            .body(hero)
+        .then()
+            .statusCode(HttpStatus.SC_OK)
+            .body("name", Matchers.equalTo(hero.getName()))
+            .body("cardSet", Matchers.equalTo(hero.getCardSet().toString()))
+            .body("affiliation", Matchers.equalTo(hero.getAffiliation().toString()))
+            .body("id", Matchers.notNullValue())
+        .when()
+            .post(RestApiTest.URL_ROOT + "/hero")
+        .andReturn()
+            .getBody().as(Hero.class);
+        
+        Assert.assertNotNull(savedHero.getId());
     }
 
     @Test
@@ -223,7 +239,7 @@ public class HeroEndpointImplTest extends RestApiTest {
     public Hero createAndStoreHero(){
         final Hero hero = this.createHero();
         
-        final Hero savedHero = RestAssured.given()
+        Hero savedHero = RestAssured.given()
             .contentType(ContentType.JSON)
             .body(hero)
         .then()
@@ -231,7 +247,7 @@ public class HeroEndpointImplTest extends RestApiTest {
         .when()
             .post(RestApiTest.URL_ROOT + "/hero")
         .andReturn()
-            .getBody().as(Hero.class);
+                .getBody().as(Hero.class);
         
         return savedHero;
     }

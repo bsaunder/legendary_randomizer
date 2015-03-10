@@ -24,6 +24,7 @@ package net.bryansaunders.legendary.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -36,7 +37,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 public class Mastermind extends LegendaryEntity {
-    
+
     /**
      * Serial Version ID.
      */
@@ -45,7 +46,7 @@ public class Mastermind extends LegendaryEntity {
     /**
      * The Mastermind Always Leads these Groups in Setup.
      */
-    @OneToMany
+    @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     private Set<Leadable> alwaysLeads;
 
     /**
