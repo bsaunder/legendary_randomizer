@@ -22,12 +22,13 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.bryansaunders.legendary.model.Hero;
+import net.bryansaunders.legendary.model.Leadable;
 import net.bryansaunders.legendary.rest.RestApiTest;
 import net.bryansaunders.legendary.util.LegendaryEntityFactory;
 
@@ -45,14 +46,14 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 
 /**
- * Integration Test for Hero Service.
+ * Integration Test for Leadable Service.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
 @RunWith(Arquillian.class)
-public class HeroEndpointImplTest extends RestApiTest {
-    
+public class LeadableEndpointImplTest extends RestApiTest  {
+
     private static final Map<Integer,String> entityMap = new HashMap<>();
 
     @Test
@@ -65,96 +66,96 @@ public class HeroEndpointImplTest extends RestApiTest {
     @Test
     @InSequence(1)
     public void add() {
-    	for(int i = 0; i < 4; i++){    	   
-    	    final Hero hero = LegendaryEntityFactory.createHero();
+        for(int i = 0; i < 4; i++){        
+            final Leadable leadable = LegendaryEntityFactory.createLeadable();
             
-            final Hero savedHero = RestAssured.given()
+            final Leadable savedLeadable = RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(hero)
+                .body(leadable)
             .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("name", Matchers.equalTo(hero.getName()))
-                .body("cardSet", Matchers.equalTo(hero.getCardSet().toString()))
-                .body("affiliation", Matchers.equalTo(hero.getAffiliation().toString()))
+                .body("name", Matchers.equalTo(leadable.getName()))
+                .body("cardSet", Matchers.equalTo(leadable.getCardSet().toString()))
+                .body("type", Matchers.equalTo(leadable.getType().toString()))
                 .body("id", Matchers.notNullValue())
             .when()
-                .post(RestApiTest.URL_ROOT + "/hero")
+                .post(RestApiTest.URL_ROOT + "/leadable")
             .andReturn()
-                .getBody().as(Hero.class);
+                .getBody().as(Leadable.class);
             
-            Assert.assertNotNull(savedHero.getId());
+            Assert.assertNotNull(savedLeadable.getId());
             
-            System.out.println("Mapping Saved Hero: " + savedHero.getId() + " - " + savedHero.getName());
-            HeroEndpointImplTest.entityMap.put(savedHero.getId(), savedHero.getName());
-    	}
+            System.out.println("Mapping Saved Leadable: " + savedLeadable.getId() + " - " + savedLeadable.getName());
+            LeadableEndpointImplTest.entityMap.put(savedLeadable.getId(), savedLeadable.getName());
+        }
     }
 
     @Test
     @InSequence(2)
-    public void addDuplicateHero() {
-        final String name = HeroEndpointImplTest.entityMap.values().iterator().next();
+    public void addDuplicateLeadable() {
+        final String name = LeadableEndpointImplTest.entityMap.values().iterator().next();
         
-        final Hero hero = LegendaryEntityFactory.createHero();
-        hero.setVersion(null);
-        hero.setName(name);
+        final Leadable leadable = LegendaryEntityFactory.createLeadable();
+        leadable.setVersion(null);
+        leadable.setName(name);
         
         RestAssured.given()
             .contentType(ContentType.JSON)
-            .body(hero)
+            .body(leadable)
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
         .when()
-            .post(RestApiTest.URL_ROOT + "/hero");
+            .post(RestApiTest.URL_ROOT + "/leadable");
     }
 
     @Test
     @InSequence(3)
-    public void getValidHero() throws JsonParseException, JsonMappingException, IOException {
+    public void getValidLeadable() throws JsonParseException, JsonMappingException, IOException {
        
-        final Integer id = HeroEndpointImplTest.entityMap.keySet().iterator().next();
+        final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
         
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
             .body("name", Matchers.notNullValue())
             .body("cardSet", Matchers.notNullValue())
-            .body("affiliation", Matchers.notNullValue())
+            .body("type", Matchers.notNullValue())
             .body("id", Matchers.equalTo(id))
         .when()
-            .get(RestApiTest.URL_ROOT + "/hero/"+id);
+            .get(RestApiTest.URL_ROOT + "/leadable/"+id);
     }
 
     @Test
     @InSequence(4)
-    public void getMissingHero() {
+    public void getMissingLeadable() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND)
         .when()
-            .get(RestApiTest.URL_ROOT + "/hero/999999");
+            .get(RestApiTest.URL_ROOT + "/leadable/999999");
     }
     
     @Test
     @InSequence(5)
-    public void deleteValidHero() {
-        final Integer id = HeroEndpointImplTest.entityMap.keySet().iterator().next();
+    public void deleteValidLeadable() {
+        final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
         
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .delete(RestApiTest.URL_ROOT + "/hero/"+id);
+            .delete(RestApiTest.URL_ROOT + "/leadable/"+id);
     }
 
     @Test
     @InSequence(6)
-    public void getAllHeroes() {
+    public void getAllLeadablees() {
         
         final List<?> resultList = RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .get(RestApiTest.URL_ROOT + "/hero")
+            .get(RestApiTest.URL_ROOT + "/leadable")
         .andReturn()
             .getBody().as(List.class);
         
@@ -163,13 +164,13 @@ public class HeroEndpointImplTest extends RestApiTest {
 
     @Test
     @InSequence(7)
-    public void getRandomHero() {
+    public void getRandomLeadable() {
         
         final List<?> resultList = RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .get(RestApiTest.URL_ROOT + "/hero/random/2")
+            .get(RestApiTest.URL_ROOT + "/leadable/random/2")
         .andReturn()
             .getBody().as(List.class);
         
@@ -177,22 +178,20 @@ public class HeroEndpointImplTest extends RestApiTest {
     }
 
     @Test
-    public void deleteMissingHero() {
+    public void deleteMissingLeadable() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND)
         .when()
-            .delete(RestApiTest.URL_ROOT + "/hero/999999");
+            .delete(RestApiTest.URL_ROOT + "/leadable/999999");
     }
 
     @Test
-    public void getRandomHeroWhenNotEnoughExist() {
+    public void getRandomLeadableWhenNotEnoughExist() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
         .when()
-            .get(RestApiTest.URL_ROOT + "/hero/random/999999");
+            .get(RestApiTest.URL_ROOT + "/leadable/random/999999");
     }
-
-    
 }
