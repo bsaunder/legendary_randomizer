@@ -31,7 +31,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -41,12 +41,12 @@ import javax.validation.constraints.NotNull;
  * 
  */
 @Entity
-@Table(name = "hero")
 public class Hero extends LegendaryEntity {
 
     /**
      * Serial Version ID.
      */
+    @Transient
     private static final long serialVersionUID = 1L;
 
     /**

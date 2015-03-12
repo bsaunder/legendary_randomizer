@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.Mastermind;
 import net.bryansaunders.legendary.rest.RestApiTest;
 import net.bryansaunders.legendary.util.LegendaryEntityFactory;
 
@@ -43,14 +43,14 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 
 /**
- * Integration Test for Leadable Service.
+ * Integration Test for Mastermind Service.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
 @RunWith(Arquillian.class)
-public class LeadableEndpointImplTest extends RestApiTest  {
-
+public class MastermindEndpointImplTest extends RestApiTest {
+    
     private static final Map<Integer,String> entityMap = new HashMap<>();
 
     @Test
@@ -64,95 +64,94 @@ public class LeadableEndpointImplTest extends RestApiTest  {
     @InSequence(1)
     public void add() {
         for(int i = 0; i < 4; i++){        
-            final Leadable leadable = LegendaryEntityFactory.createLeadable();
+            final Mastermind mastermind = LegendaryEntityFactory.createMastermind();
             
-            final Leadable savedLeadable = RestAssured.given()
+            final Mastermind savedMastermind = RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(leadable)
+                .body(mastermind)
             .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("name", Matchers.equalTo(leadable.getName()))
-                .body("cardSet", Matchers.equalTo(leadable.getCardSet().toString()))
-                .body("type", Matchers.equalTo(leadable.getType().toString()))
+                .body("name", Matchers.equalTo(mastermind.getName()))
+                .body("cardSet", Matchers.equalTo(mastermind.getCardSet().toString()))
+                .body("attack", Matchers.equalTo(mastermind.getAttack().toString()))
                 .body("id", Matchers.notNullValue())
             .when()
-                .post(RestApiTest.URL_ROOT + "/leadable")
+                .post(RestApiTest.URL_ROOT + "/mastermind")
             .andReturn()
-                .getBody().as(Leadable.class);
+                .getBody().as(Mastermind.class);
             
-            Assert.assertNotNull(savedLeadable.getId());
+            Assert.assertNotNull(savedMastermind.getId());
             
-            System.out.println("Mapping Saved Leadable: " + savedLeadable.getId() + " - " + savedLeadable.getName());
-            LeadableEndpointImplTest.entityMap.put(savedLeadable.getId(), savedLeadable.getName());
+            System.out.println("Mapping Saved Mastermind: " + savedMastermind.getId() + " - " + savedMastermind.getName());
+            MastermindEndpointImplTest.entityMap.put(savedMastermind.getId(), savedMastermind.getName());
         }
     }
 
     @Test
     @InSequence(2)
-    public void addDuplicateLeadable() {
-        final String name = LeadableEndpointImplTest.entityMap.values().iterator().next();
+    public void addDuplicateMastermind() {
+        final String name = MastermindEndpointImplTest.entityMap.values().iterator().next();
         
-        final Leadable leadable = LegendaryEntityFactory.createLeadable();
-        leadable.setVersion(null);
-        leadable.setName(name);
+        final Mastermind mastermind = LegendaryEntityFactory.createMastermind();
+        mastermind.setVersion(null);
+        mastermind.setName(name);
         
         RestAssured.given()
             .contentType(ContentType.JSON)
-            .body(leadable)
+            .body(mastermind)
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
         .when()
-            .post(RestApiTest.URL_ROOT + "/leadable");
+            .post(RestApiTest.URL_ROOT + "/mastermind");
     }
 
     @Test
     @InSequence(3)
-    public void getValidLeadable() {
-       
-        final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
+    public void getValidMastermind() {
+        final Integer id = MastermindEndpointImplTest.entityMap.keySet().iterator().next();
         
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
             .body("name", Matchers.notNullValue())
             .body("cardSet", Matchers.notNullValue())
-            .body("type", Matchers.notNullValue())
+            .body("attack", Matchers.notNullValue())
             .body("id", Matchers.equalTo(id))
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/"+id);
+            .get(RestApiTest.URL_ROOT + "/mastermind/"+id);
     }
 
     @Test
     @InSequence(4)
-    public void getMissingLeadable() {
+    public void getMissingMastermind() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/999999");
+            .get(RestApiTest.URL_ROOT + "/mastermind/999999");
     }
     
     @Test
     @InSequence(5)
-    public void deleteValidLeadable() {
-        final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
+    public void deleteValidMastermind() {
+        final Integer id = MastermindEndpointImplTest.entityMap.keySet().iterator().next();
         
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .delete(RestApiTest.URL_ROOT + "/leadable/"+id);
+            .delete(RestApiTest.URL_ROOT + "/mastermind/"+id);
     }
 
     @Test
     @InSequence(6)
-    public void getAllLeadablees() {
+    public void getAllMasterminds() {
         
         final List<?> resultList = RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable")
+            .get(RestApiTest.URL_ROOT + "/mastermind")
         .andReturn()
             .getBody().as(List.class);
         
@@ -161,13 +160,13 @@ public class LeadableEndpointImplTest extends RestApiTest  {
 
     @Test
     @InSequence(7)
-    public void getRandomLeadable() {
+    public void getRandomMastermind() {
         
         final List<?> resultList = RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/random/2")
+            .get(RestApiTest.URL_ROOT + "/mastermind/random/2")
         .andReturn()
             .getBody().as(List.class);
         
@@ -175,20 +174,21 @@ public class LeadableEndpointImplTest extends RestApiTest  {
     }
 
     @Test
-    public void deleteMissingLeadable() {
+    public void deleteMissingMastermind() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND)
         .when()
-            .delete(RestApiTest.URL_ROOT + "/leadable/999999");
+            .delete(RestApiTest.URL_ROOT + "/mastermind/999999");
     }
 
     @Test
-    public void getRandomLeadableWhenNotEnoughExist() {
+    public void getRandomMastermindWhenNotEnoughExist() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/random/999999");
+            .get(RestApiTest.URL_ROOT + "/mastermind/random/999999");
     }
+
 }

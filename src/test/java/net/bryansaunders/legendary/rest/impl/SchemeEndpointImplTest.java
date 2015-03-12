@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.Scheme;
 import net.bryansaunders.legendary.rest.RestApiTest;
 import net.bryansaunders.legendary.util.LegendaryEntityFactory;
 
@@ -43,14 +43,14 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 
 /**
- * Integration Test for Leadable Service.
+ * Integration Test for Scheme Service.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
 @RunWith(Arquillian.class)
-public class LeadableEndpointImplTest extends RestApiTest  {
-
+public class SchemeEndpointImplTest  extends RestApiTest{
+    
     private static final Map<Integer,String> entityMap = new HashMap<>();
 
     @Test
@@ -64,95 +64,92 @@ public class LeadableEndpointImplTest extends RestApiTest  {
     @InSequence(1)
     public void add() {
         for(int i = 0; i < 4; i++){        
-            final Leadable leadable = LegendaryEntityFactory.createLeadable();
+            final Scheme scheme = LegendaryEntityFactory.createScheme();
             
-            final Leadable savedLeadable = RestAssured.given()
+            final Scheme savedScheme = RestAssured.given()
                 .contentType(ContentType.JSON)
-                .body(leadable)
+                .body(scheme)
             .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("name", Matchers.equalTo(leadable.getName()))
-                .body("cardSet", Matchers.equalTo(leadable.getCardSet().toString()))
-                .body("type", Matchers.equalTo(leadable.getType().toString()))
+                .body("name", Matchers.equalTo(scheme.getName()))
+                .body("cardSet", Matchers.equalTo(scheme.getCardSet().toString()))
                 .body("id", Matchers.notNullValue())
             .when()
-                .post(RestApiTest.URL_ROOT + "/leadable")
+                .post(RestApiTest.URL_ROOT + "/scheme")
             .andReturn()
-                .getBody().as(Leadable.class);
+                .getBody().as(Scheme.class);
             
-            Assert.assertNotNull(savedLeadable.getId());
+            Assert.assertNotNull(savedScheme.getId());
             
-            System.out.println("Mapping Saved Leadable: " + savedLeadable.getId() + " - " + savedLeadable.getName());
-            LeadableEndpointImplTest.entityMap.put(savedLeadable.getId(), savedLeadable.getName());
+            System.out.println("Mapping Saved Scheme: " + savedScheme.getId() + " - " + savedScheme.getName());
+            SchemeEndpointImplTest.entityMap.put(savedScheme.getId(), savedScheme.getName());
         }
     }
 
     @Test
     @InSequence(2)
-    public void addDuplicateLeadable() {
-        final String name = LeadableEndpointImplTest.entityMap.values().iterator().next();
+    public void addDuplicateScheme() {
+        final String name = SchemeEndpointImplTest.entityMap.values().iterator().next();
         
-        final Leadable leadable = LegendaryEntityFactory.createLeadable();
-        leadable.setVersion(null);
-        leadable.setName(name);
+        final Scheme scheme = LegendaryEntityFactory.createScheme();
+        scheme.setVersion(null);
+        scheme.setName(name);
         
         RestAssured.given()
             .contentType(ContentType.JSON)
-            .body(leadable)
+            .body(scheme)
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
         .when()
-            .post(RestApiTest.URL_ROOT + "/leadable");
+            .post(RestApiTest.URL_ROOT + "/scheme");
     }
 
     @Test
     @InSequence(3)
-    public void getValidLeadable() {
-       
-        final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
+    public void getValidScheme() {
+        final Integer id = SchemeEndpointImplTest.entityMap.keySet().iterator().next();
         
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
             .body("name", Matchers.notNullValue())
             .body("cardSet", Matchers.notNullValue())
-            .body("type", Matchers.notNullValue())
             .body("id", Matchers.equalTo(id))
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/"+id);
+            .get(RestApiTest.URL_ROOT + "/scheme/"+id);
     }
 
     @Test
     @InSequence(4)
-    public void getMissingLeadable() {
+    public void getMissingScheme() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/999999");
+            .get(RestApiTest.URL_ROOT + "/scheme/999999");
     }
     
     @Test
     @InSequence(5)
-    public void deleteValidLeadable() {
-        final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
+    public void deleteValidScheme() {
+        final Integer id = SchemeEndpointImplTest.entityMap.keySet().iterator().next();
         
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .delete(RestApiTest.URL_ROOT + "/leadable/"+id);
+            .delete(RestApiTest.URL_ROOT + "/scheme/"+id);
     }
 
     @Test
     @InSequence(6)
-    public void getAllLeadablees() {
+    public void getAllSchemes() {
         
         final List<?> resultList = RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable")
+            .get(RestApiTest.URL_ROOT + "/scheme")
         .andReturn()
             .getBody().as(List.class);
         
@@ -161,13 +158,13 @@ public class LeadableEndpointImplTest extends RestApiTest  {
 
     @Test
     @InSequence(7)
-    public void getRandomLeadable() {
+    public void getRandomScheme() {
         
         final List<?> resultList = RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_OK)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/random/2")
+            .get(RestApiTest.URL_ROOT + "/scheme/random/2")
         .andReturn()
             .getBody().as(List.class);
         
@@ -175,20 +172,21 @@ public class LeadableEndpointImplTest extends RestApiTest  {
     }
 
     @Test
-    public void deleteMissingLeadable() {
+    public void deleteMissingScheme() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND)
         .when()
-            .delete(RestApiTest.URL_ROOT + "/leadable/999999");
+            .delete(RestApiTest.URL_ROOT + "/scheme/999999");
     }
 
     @Test
-    public void getRandomLeadableWhenNotEnoughExist() {
+    public void getRandomSchemeWhenNotEnoughExist() {
         RestAssured.given()
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
         .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/random/999999");
+            .get(RestApiTest.URL_ROOT + "/scheme/random/999999");
     }
+
 }

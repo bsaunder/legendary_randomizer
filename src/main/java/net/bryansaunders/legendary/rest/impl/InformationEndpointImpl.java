@@ -50,7 +50,7 @@ public class InformationEndpointImpl implements IInformationEndpoint {
      */
     @Override
     public Response getInformation() {
-        Information info = this.infoService.getInformation();
+        final Information info = this.infoService.getInformation();
         return Response.status(Status.OK).entity(info).build();
     }
 }

@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +31,6 @@ import net.bryansaunders.legendary.rest.RestApiTest;
 import net.bryansaunders.legendary.util.LegendaryEntityFactory;
 
 import org.apache.http.HttpStatus;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.hamcrest.Matchers;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
@@ -52,8 +49,8 @@ import com.jayway.restassured.http.ContentType;
  */
 @RunWith(Arquillian.class)
 public class HeroEndpointImplTest extends RestApiTest {
-    
-    private static final Map<Integer,String> entityMap = new HashMap<>();
+
+    private static final Map<Integer, String> entityMap = new HashMap<>();
 
     @Test
     @InSequence(0)
@@ -65,134 +62,92 @@ public class HeroEndpointImplTest extends RestApiTest {
     @Test
     @InSequence(1)
     public void add() {
-    	for(int i = 0; i < 4; i++){    	   
-    	    final Hero hero = LegendaryEntityFactory.createHero();
-            
-            final Hero savedHero = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(hero)
-            .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body("name", Matchers.equalTo(hero.getName()))
-                .body("cardSet", Matchers.equalTo(hero.getCardSet().toString()))
-                .body("affiliation", Matchers.equalTo(hero.getAffiliation().toString()))
-                .body("id", Matchers.notNullValue())
-            .when()
-                .post(RestApiTest.URL_ROOT + "/hero")
-            .andReturn()
-                .getBody().as(Hero.class);
-            
+        for (int i = 0; i < 4; i++) {
+            final Hero hero = LegendaryEntityFactory.createHero();
+
+            final Hero savedHero = RestAssured.given().contentType(ContentType.JSON).body(hero).then()
+                    .statusCode(HttpStatus.SC_OK).body("name", Matchers.equalTo(hero.getName()))
+                    .body("cardSet", Matchers.equalTo(hero.getCardSet().toString()))
+                    .body("affiliation", Matchers.equalTo(hero.getAffiliation().toString()))
+                    .body("id", Matchers.notNullValue()).when().post(RestApiTest.URL_ROOT + "/hero").andReturn()
+                    .getBody().as(Hero.class);
+
             Assert.assertNotNull(savedHero.getId());
-            
+
             System.out.println("Mapping Saved Hero: " + savedHero.getId() + " - " + savedHero.getName());
             HeroEndpointImplTest.entityMap.put(savedHero.getId(), savedHero.getName());
-    	}
+        }
     }
 
     @Test
     @InSequence(2)
     public void addDuplicateHero() {
         final String name = HeroEndpointImplTest.entityMap.values().iterator().next();
-        
+
         final Hero hero = LegendaryEntityFactory.createHero();
         hero.setVersion(null);
         hero.setName(name);
-        
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .body(hero)
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .post(RestApiTest.URL_ROOT + "/hero");
+
+        RestAssured.given().contentType(ContentType.JSON).body(hero).then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                .when().post(RestApiTest.URL_ROOT + "/hero");
     }
 
     @Test
     @InSequence(3)
-    public void getValidHero() throws JsonParseException, JsonMappingException, IOException {
-       
+    public void getValidHero() {
+
         final Integer id = HeroEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-            .body("name", Matchers.notNullValue())
-            .body("cardSet", Matchers.notNullValue())
-            .body("affiliation", Matchers.notNullValue())
-            .body("id", Matchers.equalTo(id))
-        .when()
-            .get(RestApiTest.URL_ROOT + "/hero/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).body("name", Matchers.notNullValue())
+                .body("cardSet", Matchers.notNullValue()).body("affiliation", Matchers.notNullValue())
+                .body("id", Matchers.equalTo(id)).when().get(RestApiTest.URL_ROOT + "/hero/" + id);
     }
 
     @Test
     @InSequence(4)
     public void getMissingHero() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/hero/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .get(RestApiTest.URL_ROOT + "/hero/999999");
     }
-    
+
     @Test
     @InSequence(5)
     public void deleteValidHero() {
         final Integer id = HeroEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/hero/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).when().delete(RestApiTest.URL_ROOT + "/hero/" + id);
     }
 
     @Test
     @InSequence(6)
     public void getAllHeroes() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/hero")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/hero").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(3, resultList.size());
     }
 
     @Test
     @InSequence(7)
     public void getRandomHero() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/hero/random/2")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/hero/random/2").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(2, resultList.size());
     }
 
     @Test
     public void deleteMissingHero() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/hero/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .delete(RestApiTest.URL_ROOT + "/hero/999999");
     }
 
     @Test
     public void getRandomHeroWhenNotEnoughExist() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/hero/random/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_BAD_REQUEST).when()
+                .get(RestApiTest.URL_ROOT + "/hero/random/999999");
     }
 
-    
 }

@@ -23,58 +23,61 @@ package net.bryansaunders.legendary.model;
  */
 
 
+import java.util.Set;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 /**
- * Represents a Charaacters that is Leadable by a Mastermind.
+ * Scheme.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
 @Entity
-public class Leadable extends LegendaryEntity {
-    
+public class Scheme extends LegendaryEntity {
+
     /**
-     * Serial Version ID.
+     * Default Serial ID.
      */
     @Transient
     private static final long serialVersionUID = 1L;
 
     /**
-     * Leadable Type.
+     * Special Instructions.
      */
-    @NotNull
-    private LeadableType type;
+    @ElementCollection(fetch=FetchType.EAGER)
+    private Set<String> specialInstructions;
 
     /**
-     * Get the type.
+     * Get the specialInstructions.
      * 
-     * @return the type
+     * @return the specialInstructions
      */
-    public LeadableType getType() {
-        return this.type;
+    public Set<String> getSpecialInstructions() {
+        return this.specialInstructions;
     }
 
     /**
-     * Set the type.
+     * Set the specialInstructions.
      * 
-     * @param pType
-     *            the type to set
+     * @param pSpecialInstructions
+     *            the specialInstructions to set
      */
-    public void setType(final LeadableType pType) {
-        this.type = pType;
+    public void setSpecialInstructions(Set<String> pSpecialInstructions) {
+        this.specialInstructions = pSpecialInstructions;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return "Leadable [type=" + this.type + ", name=" + this.getName() + "]";
+        return "Scheme [specialInstructions=" + this.specialInstructions + ", getName()=" + this.getName() + "]";
     }
+    
+    
 
 }

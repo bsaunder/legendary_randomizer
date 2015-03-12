@@ -32,6 +32,8 @@ import net.bryansaunders.legendary.model.CardSet;
 import net.bryansaunders.legendary.model.Hero;
 import net.bryansaunders.legendary.model.Leadable;
 import net.bryansaunders.legendary.model.LeadableType;
+import net.bryansaunders.legendary.model.Mastermind;
+import net.bryansaunders.legendary.model.Scheme;
 import net.bryansaunders.legendary.model.Team;
 
 public abstract class LegendaryEntityFactory {
@@ -58,5 +60,30 @@ public abstract class LegendaryEntityFactory {
         leadable.setType(LeadableType.HENCHMAN);
         
         return leadable;
+    }
+    
+    public static Mastermind createMastermind(){
+        final Mastermind mastermind = new Mastermind();
+        mastermind.setName(UUID.randomUUID().toString());
+        mastermind.setAttack("15+");
+        mastermind.setCardSet(CardSet.FF4);
+        
+        Set<Leadable> leadables = new HashSet<>();
+        leadables.add(createLeadable());
+        mastermind.setAlwaysLeads(leadables);
+        
+        return mastermind;
+    }
+
+    public static Scheme createScheme() {
+        Scheme scheme = new Scheme();
+        scheme.setName(UUID.randomUUID().toString());
+        scheme.setCardSet(CardSet.GOTG);
+        
+        Set<String> instructions = new HashSet<>();
+        instructions.add("Setup Step 1");
+        scheme.setSpecialInstructions(instructions);
+        
+        return scheme;
     }
 }

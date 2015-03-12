@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -46,7 +47,7 @@ public class Mastermind extends LegendaryEntity {
     /**
      * The Mastermind Always Leads these Groups in Setup.
      */
-    @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
     private Set<Leadable> alwaysLeads;
 
     /**
