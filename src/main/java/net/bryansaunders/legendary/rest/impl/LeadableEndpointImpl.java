@@ -74,7 +74,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
             final Leadable leadable = this.leadableService.getLeadable(id);
             responseBuilder = responseBuilder.entity(leadable);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND);
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -94,7 +94,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
             responseBuilder = responseBuilder.entity(savedLeadable);
         } catch (final EJBTransactionRolledbackException e) {
             // Really should Handle this Better.. Its for Non-Unique Names
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -113,7 +113,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
         try {
             this.leadableService.deleteLeadable(id);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND);
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -133,7 +133,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
             final List<Leadable> leadablees = this.leadableService.getRandomLeadables(count);
             responseBuilder = responseBuilder.entity(leadablees);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();

@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,39 +49,35 @@ import com.jayway.restassured.http.ContentType;
  */
 @RunWith(Arquillian.class)
 public class MastermindEndpointImplTest extends RestApiTest {
-    
-    private static final Map<Integer,String> entityMap = new HashMap<>();
+
+    private static final Map<Integer, String> entityMap = new HashMap<>();
 
     @Test
     @InSequence(0)
     public void getAllWhenNoneExist() {
-        Assert.assertTrue(true);
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/mastermind").andReturn().getBody().as(List.class);
 
+        Assert.assertEquals(0, resultList.size());
     }
 
     @Test
     @InSequence(1)
     public void add() {
-        for(int i = 0; i < 4; i++){        
+        for (int i = 0; i < 4; i++) {
             final Mastermind mastermind = LegendaryEntityFactory.createMastermind();
-            
-            final Mastermind savedMastermind = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(mastermind)
-            .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body("name", Matchers.equalTo(mastermind.getName()))
-                .body("cardSet", Matchers.equalTo(mastermind.getCardSet().toString()))
-                .body("attack", Matchers.equalTo(mastermind.getAttack().toString()))
-                .body("id", Matchers.notNullValue())
-            .when()
-                .post(RestApiTest.URL_ROOT + "/mastermind")
-            .andReturn()
-                .getBody().as(Mastermind.class);
-            
+
+            final Mastermind savedMastermind = RestAssured.given().contentType(ContentType.JSON).body(mastermind)
+                    .then().statusCode(HttpStatus.SC_OK).body("name", Matchers.equalTo(mastermind.getName()))
+                    .body("cardSet", Matchers.equalTo(mastermind.getCardSet().toString()))
+                    .body("attack", Matchers.equalTo(mastermind.getAttack().toString()))
+                    .body("id", Matchers.notNullValue()).when().post(RestApiTest.URL_ROOT + "/mastermind").andReturn()
+                    .getBody().as(Mastermind.class);
+
             Assert.assertNotNull(savedMastermind.getId());
-            
-            System.out.println("Mapping Saved Mastermind: " + savedMastermind.getId() + " - " + savedMastermind.getName());
+
+            System.out.println("Mapping Saved Mastermind: " + savedMastermind.getId() + " - "
+                    + savedMastermind.getName());
             MastermindEndpointImplTest.entityMap.put(savedMastermind.getId(), savedMastermind.getName());
         }
     }
@@ -91,104 +86,71 @@ public class MastermindEndpointImplTest extends RestApiTest {
     @InSequence(2)
     public void addDuplicateMastermind() {
         final String name = MastermindEndpointImplTest.entityMap.values().iterator().next();
-        
+
         final Mastermind mastermind = LegendaryEntityFactory.createMastermind();
         mastermind.setVersion(null);
         mastermind.setName(name);
-        
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .body(mastermind)
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .post(RestApiTest.URL_ROOT + "/mastermind");
+
+        RestAssured.given().contentType(ContentType.JSON).body(mastermind).then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                .when().post(RestApiTest.URL_ROOT + "/mastermind");
     }
 
     @Test
     @InSequence(3)
     public void getValidMastermind() {
         final Integer id = MastermindEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-            .body("name", Matchers.notNullValue())
-            .body("cardSet", Matchers.notNullValue())
-            .body("attack", Matchers.notNullValue())
-            .body("id", Matchers.equalTo(id))
-        .when()
-            .get(RestApiTest.URL_ROOT + "/mastermind/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).body("name", Matchers.notNullValue())
+                .body("cardSet", Matchers.notNullValue()).body("attack", Matchers.notNullValue())
+                .body("id", Matchers.equalTo(id)).when().get(RestApiTest.URL_ROOT + "/mastermind/" + id);
     }
 
     @Test
     @InSequence(4)
     public void getMissingMastermind() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/mastermind/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .get(RestApiTest.URL_ROOT + "/mastermind/999999");
     }
-    
+
     @Test
     @InSequence(5)
     public void deleteValidMastermind() {
         final Integer id = MastermindEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/mastermind/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .delete(RestApiTest.URL_ROOT + "/mastermind/" + id);
     }
 
     @Test
     @InSequence(6)
     public void getAllMasterminds() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/mastermind")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/mastermind").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(3, resultList.size());
     }
 
     @Test
     @InSequence(7)
     public void getRandomMastermind() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/mastermind/random/2")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/mastermind/random/2").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(2, resultList.size());
     }
 
     @Test
     public void deleteMissingMastermind() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/mastermind/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .delete(RestApiTest.URL_ROOT + "/mastermind/999999");
     }
 
     @Test
     public void getRandomMastermindWhenNotEnoughExist() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/mastermind/random/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_BAD_REQUEST).when()
+                .get(RestApiTest.URL_ROOT + "/mastermind/random/999999");
     }
 
 }

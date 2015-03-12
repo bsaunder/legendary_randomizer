@@ -75,7 +75,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
             final Mastermind mastermind = this.mastermindService.getMastermind(id);
             responseBuilder = responseBuilder.entity(mastermind);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND);
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -96,7 +96,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
             responseBuilder = responseBuilder.entity(savedMastermind);
         } catch (final EJBTransactionRolledbackException e) {
             // Really should Handle this Better.. Its for Non-Unique Names
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -115,7 +115,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
         try {
             this.mastermindService.deleteMastermind(id);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND);
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -135,7 +135,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
             final List<Mastermind> masterminds = this.mastermindService.getRandomMasterminds(count);
             responseBuilder = responseBuilder.entity(masterminds);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();

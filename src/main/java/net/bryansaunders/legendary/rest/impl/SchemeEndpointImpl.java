@@ -76,7 +76,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
             final Scheme scheme = this.schemeService.getScheme(id);
             responseBuilder = responseBuilder.entity(scheme);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND);
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -97,7 +97,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
             responseBuilder = responseBuilder.entity(savedScheme);
         } catch (final EJBTransactionRolledbackException e) {
             // Really should Handle this Better.. Its for Non-Unique Names
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -116,7 +116,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
         try {
             this.schemeService.deleteScheme(id);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND);
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();
@@ -136,7 +136,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
             final List<Scheme> schemes = this.schemeService.getRandomSchemes(count);
             responseBuilder = responseBuilder.entity(schemes);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST);
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
         }
 
         return responseBuilder.build();

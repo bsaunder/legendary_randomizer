@@ -55,8 +55,10 @@ public class HeroEndpointImplTest extends RestApiTest {
     @Test
     @InSequence(0)
     public void getAllWhenNoneExist() {
-        Assert.assertTrue(true);
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/hero").andReturn().getBody().as(List.class);
 
+        Assert.assertEquals(0, resultList.size());
     }
 
     @Test

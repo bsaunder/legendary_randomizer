@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,38 +48,33 @@ import com.jayway.restassured.http.ContentType;
  * 
  */
 @RunWith(Arquillian.class)
-public class SchemeEndpointImplTest  extends RestApiTest{
-    
-    private static final Map<Integer,String> entityMap = new HashMap<>();
+public class SchemeEndpointImplTest extends RestApiTest {
+
+    private static final Map<Integer, String> entityMap = new HashMap<>();
 
     @Test
     @InSequence(0)
     public void getAllWhenNoneExist() {
-        Assert.assertTrue(true);
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/scheme").andReturn().getBody().as(List.class);
 
+        Assert.assertEquals(0, resultList.size());
     }
 
     @Test
     @InSequence(1)
     public void add() {
-        for(int i = 0; i < 4; i++){        
+        for (int i = 0; i < 4; i++) {
             final Scheme scheme = LegendaryEntityFactory.createScheme();
-            
-            final Scheme savedScheme = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(scheme)
-            .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body("name", Matchers.equalTo(scheme.getName()))
-                .body("cardSet", Matchers.equalTo(scheme.getCardSet().toString()))
-                .body("id", Matchers.notNullValue())
-            .when()
-                .post(RestApiTest.URL_ROOT + "/scheme")
-            .andReturn()
-                .getBody().as(Scheme.class);
-            
+
+            final Scheme savedScheme = RestAssured.given().contentType(ContentType.JSON).body(scheme).then()
+                    .statusCode(HttpStatus.SC_OK).body("name", Matchers.equalTo(scheme.getName()))
+                    .body("cardSet", Matchers.equalTo(scheme.getCardSet().toString()))
+                    .body("id", Matchers.notNullValue()).when().post(RestApiTest.URL_ROOT + "/scheme").andReturn()
+                    .getBody().as(Scheme.class);
+
             Assert.assertNotNull(savedScheme.getId());
-            
+
             System.out.println("Mapping Saved Scheme: " + savedScheme.getId() + " - " + savedScheme.getName());
             SchemeEndpointImplTest.entityMap.put(savedScheme.getId(), savedScheme.getName());
         }
@@ -90,103 +84,70 @@ public class SchemeEndpointImplTest  extends RestApiTest{
     @InSequence(2)
     public void addDuplicateScheme() {
         final String name = SchemeEndpointImplTest.entityMap.values().iterator().next();
-        
+
         final Scheme scheme = LegendaryEntityFactory.createScheme();
         scheme.setVersion(null);
         scheme.setName(name);
-        
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .body(scheme)
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .post(RestApiTest.URL_ROOT + "/scheme");
+
+        RestAssured.given().contentType(ContentType.JSON).body(scheme).then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                .when().post(RestApiTest.URL_ROOT + "/scheme");
     }
 
     @Test
     @InSequence(3)
     public void getValidScheme() {
         final Integer id = SchemeEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-            .body("name", Matchers.notNullValue())
-            .body("cardSet", Matchers.notNullValue())
-            .body("id", Matchers.equalTo(id))
-        .when()
-            .get(RestApiTest.URL_ROOT + "/scheme/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).body("name", Matchers.notNullValue())
+                .body("cardSet", Matchers.notNullValue()).body("id", Matchers.equalTo(id)).when()
+                .get(RestApiTest.URL_ROOT + "/scheme/" + id);
     }
 
     @Test
     @InSequence(4)
     public void getMissingScheme() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/scheme/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .get(RestApiTest.URL_ROOT + "/scheme/999999");
     }
-    
+
     @Test
     @InSequence(5)
     public void deleteValidScheme() {
         final Integer id = SchemeEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/scheme/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).when().delete(RestApiTest.URL_ROOT + "/scheme/" + id);
     }
 
     @Test
     @InSequence(6)
     public void getAllSchemes() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/scheme")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/scheme").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(3, resultList.size());
     }
 
     @Test
     @InSequence(7)
     public void getRandomScheme() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/scheme/random/2")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/scheme/random/2").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(2, resultList.size());
     }
 
     @Test
     public void deleteMissingScheme() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/scheme/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .delete(RestApiTest.URL_ROOT + "/scheme/999999");
     }
 
     @Test
     public void getRandomSchemeWhenNotEnoughExist() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/scheme/random/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_BAD_REQUEST).when()
+                .get(RestApiTest.URL_ROOT + "/scheme/random/999999");
     }
 
 }

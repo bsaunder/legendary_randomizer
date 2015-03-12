@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,39 +48,33 @@ import com.jayway.restassured.http.ContentType;
  * 
  */
 @RunWith(Arquillian.class)
-public class LeadableEndpointImplTest extends RestApiTest  {
+public class LeadableEndpointImplTest extends RestApiTest {
 
-    private static final Map<Integer,String> entityMap = new HashMap<>();
+    private static final Map<Integer, String> entityMap = new HashMap<>();
 
     @Test
     @InSequence(0)
     public void getAllWhenNoneExist() {
-        Assert.assertTrue(true);
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/leadable").andReturn().getBody().as(List.class);
 
+        Assert.assertEquals(0, resultList.size());
     }
 
     @Test
     @InSequence(1)
     public void add() {
-        for(int i = 0; i < 4; i++){        
+        for (int i = 0; i < 4; i++) {
             final Leadable leadable = LegendaryEntityFactory.createLeadable();
-            
-            final Leadable savedLeadable = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(leadable)
-            .then()
-                .statusCode(HttpStatus.SC_OK)
-                .body("name", Matchers.equalTo(leadable.getName()))
-                .body("cardSet", Matchers.equalTo(leadable.getCardSet().toString()))
-                .body("type", Matchers.equalTo(leadable.getType().toString()))
-                .body("id", Matchers.notNullValue())
-            .when()
-                .post(RestApiTest.URL_ROOT + "/leadable")
-            .andReturn()
-                .getBody().as(Leadable.class);
-            
+
+            final Leadable savedLeadable = RestAssured.given().contentType(ContentType.JSON).body(leadable).then()
+                    .statusCode(HttpStatus.SC_OK).body("name", Matchers.equalTo(leadable.getName()))
+                    .body("cardSet", Matchers.equalTo(leadable.getCardSet().toString()))
+                    .body("type", Matchers.equalTo(leadable.getType().toString())).body("id", Matchers.notNullValue())
+                    .when().post(RestApiTest.URL_ROOT + "/leadable").andReturn().getBody().as(Leadable.class);
+
             Assert.assertNotNull(savedLeadable.getId());
-            
+
             System.out.println("Mapping Saved Leadable: " + savedLeadable.getId() + " - " + savedLeadable.getName());
             LeadableEndpointImplTest.entityMap.put(savedLeadable.getId(), savedLeadable.getName());
         }
@@ -91,104 +84,70 @@ public class LeadableEndpointImplTest extends RestApiTest  {
     @InSequence(2)
     public void addDuplicateLeadable() {
         final String name = LeadableEndpointImplTest.entityMap.values().iterator().next();
-        
+
         final Leadable leadable = LegendaryEntityFactory.createLeadable();
         leadable.setVersion(null);
         leadable.setName(name);
-        
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .body(leadable)
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .post(RestApiTest.URL_ROOT + "/leadable");
+
+        RestAssured.given().contentType(ContentType.JSON).body(leadable).then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                .when().post(RestApiTest.URL_ROOT + "/leadable");
     }
 
     @Test
     @InSequence(3)
     public void getValidLeadable() {
-       
+
         final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-            .body("name", Matchers.notNullValue())
-            .body("cardSet", Matchers.notNullValue())
-            .body("type", Matchers.notNullValue())
-            .body("id", Matchers.equalTo(id))
-        .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).body("name", Matchers.notNullValue())
+                .body("cardSet", Matchers.notNullValue()).body("type", Matchers.notNullValue())
+                .body("id", Matchers.equalTo(id)).when().get(RestApiTest.URL_ROOT + "/leadable/" + id);
     }
 
     @Test
     @InSequence(4)
     public void getMissingLeadable() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .get(RestApiTest.URL_ROOT + "/leadable/999999");
     }
-    
+
     @Test
     @InSequence(5)
     public void deleteValidLeadable() {
         final Integer id = LeadableEndpointImplTest.entityMap.keySet().iterator().next();
-        
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/leadable/"+id);
+
+        RestAssured.given().then().statusCode(HttpStatus.SC_OK).when().delete(RestApiTest.URL_ROOT + "/leadable/" + id);
     }
 
     @Test
     @InSequence(6)
     public void getAllLeadablees() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/leadable")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/leadable").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(3, resultList.size());
     }
 
     @Test
     @InSequence(7)
     public void getRandomLeadable() {
-        
-        final List<?> resultList = RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_OK)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/random/2")
-        .andReturn()
-            .getBody().as(List.class);
-        
+
+        final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
+                .get(RestApiTest.URL_ROOT + "/leadable/random/2").andReturn().getBody().as(List.class);
+
         Assert.assertEquals(2, resultList.size());
     }
 
     @Test
     public void deleteMissingLeadable() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND)
-        .when()
-            .delete(RestApiTest.URL_ROOT + "/leadable/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_NOT_FOUND).when()
+                .delete(RestApiTest.URL_ROOT + "/leadable/999999");
     }
 
     @Test
     public void getRandomLeadableWhenNotEnoughExist() {
-        RestAssured.given()
-        .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-        .when()
-            .get(RestApiTest.URL_ROOT + "/leadable/random/999999");
+        RestAssured.given().then().statusCode(HttpStatus.SC_BAD_REQUEST).when()
+                .get(RestApiTest.URL_ROOT + "/leadable/random/999999");
     }
 }
