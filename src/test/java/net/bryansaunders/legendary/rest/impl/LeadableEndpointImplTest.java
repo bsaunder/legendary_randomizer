@@ -22,11 +22,13 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.LeadableType;
 import net.bryansaunders.legendary.rest.RestApiTest;
 import net.bryansaunders.legendary.util.LegendaryEntityFactory;
 
@@ -74,8 +76,20 @@ public class LeadableEndpointImplTest extends RestApiTest {
                     .when().post(RestApiTest.URL_ROOT + "/leadable").andReturn().getBody().as(Leadable.class);
 
             Assert.assertNotNull(savedLeadable.getId());
+            LeadableEndpointImplTest.entityMap.put(savedLeadable.getId(), savedLeadable.getName());
+        }
+        
+        for (int i = 0; i < 4; i++) {
+            final Leadable leadable = LegendaryEntityFactory.createLeadable();
+            leadable.setType(LeadableType.VILLAIN);
 
-            System.out.println("Mapping Saved Leadable: " + savedLeadable.getId() + " - " + savedLeadable.getName());
+            final Leadable savedLeadable = RestAssured.given().contentType(ContentType.JSON).body(leadable).then()
+                    .statusCode(HttpStatus.SC_OK).body("name", Matchers.equalTo(leadable.getName()))
+                    .body("cardSet", Matchers.equalTo(leadable.getCardSet().toString()))
+                    .body("type", Matchers.equalTo(leadable.getType().toString())).body("id", Matchers.notNullValue())
+                    .when().post(RestApiTest.URL_ROOT + "/leadable").andReturn().getBody().as(Leadable.class);
+
+            Assert.assertNotNull(savedLeadable.getId());
             LeadableEndpointImplTest.entityMap.put(savedLeadable.getId(), savedLeadable.getName());
         }
     }
@@ -126,7 +140,7 @@ public class LeadableEndpointImplTest extends RestApiTest {
         final List<?> resultList = RestAssured.given().then().statusCode(HttpStatus.SC_OK).when()
                 .get(RestApiTest.URL_ROOT + "/leadable").andReturn().getBody().as(List.class);
 
-        Assert.assertEquals(3, resultList.size());
+        Assert.assertEquals(7, resultList.size());
     }
 
     @Test
@@ -137,6 +151,42 @@ public class LeadableEndpointImplTest extends RestApiTest {
                 .get(RestApiTest.URL_ROOT + "/leadable/random/2").andReturn().getBody().as(List.class);
 
         Assert.assertEquals(2, resultList.size());
+    }
+    
+    @Test
+    @InSequence(8)
+    public void getRandomHenchmanLeadable() {
+
+        final List<Leadable> resultList = Arrays.asList(RestAssured.given()
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                .when()
+                    .get(RestApiTest.URL_ROOT + "/leadable/random/2?type="+LeadableType.HENCHMAN)
+                .andReturn()
+                    .getBody().as(Leadable[].class));
+
+            Assert.assertEquals(2, resultList.size());
+            for(Leadable leadable : resultList){
+                Assert.assertEquals(LeadableType.HENCHMAN, leadable.getType());
+            }
+    }
+    
+    @Test
+    @InSequence(9)
+    public void getRandomVillainLeadable() {
+
+        final List<Leadable> resultList = Arrays.asList(RestAssured.given()
+            .then()
+                .statusCode(HttpStatus.SC_OK)
+            .when()
+                .get(RestApiTest.URL_ROOT + "/leadable/random/2?type="+LeadableType.VILLAIN)
+            .andReturn()
+                .getBody().as(Leadable[].class));
+
+        Assert.assertEquals(2, resultList.size());
+        for(Leadable leadable : resultList){
+            Assert.assertEquals(LeadableType.VILLAIN, leadable.getType());
+        }
     }
 
     @Test

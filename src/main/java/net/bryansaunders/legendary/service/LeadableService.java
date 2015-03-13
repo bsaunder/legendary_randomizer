@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.service;
  * #L%
  */
 
-
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -30,6 +29,7 @@ import javax.inject.Inject;
 
 import net.bryansaunders.legendary.dao.impl.LeadableDao;
 import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.LeadableType;
 
 /**
  * Stores and Retrieves Leadable Data.
@@ -95,10 +95,12 @@ public class LeadableService {
      * 
      * @param count
      *            Number of Leadables.
+     * @param type
+     *            Type of Leadables
      * @return List of Leadables
      */
-    public List<Leadable> getRandomLeadables(final Integer count) {
-        return this.leadableDao.getRandom(count);
+    public List<Leadable> getRandomLeadables(final Integer count, final LeadableType type) {
+        return this.leadableDao.getRandom(count, type);
     }
 
     /**

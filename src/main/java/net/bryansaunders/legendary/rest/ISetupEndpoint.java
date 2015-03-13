@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -42,9 +41,12 @@ public interface ISetupEndpoint {
     /**
      * Gets a Game Setup.
      * 
-     * @param players
-     *            Scheme ID.
-     * 
+     * @param playerCount
+     *            Player Count.
+     * @param schemeId
+     *            Scheme.
+     * @param mastermindId
+     *            Mastermind.
      * @return JSON String
      */
     @GET

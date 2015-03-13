@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.dao.impl;
  * #L%
  */
 
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +29,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.LeadableType;
 
 /**
  * Leadable DAO.
@@ -44,13 +44,23 @@ public class LeadableDao extends GenericDaoImpl<Leadable> {
      * 
      * @param count
      *            Number of Leadables.
+     * @param type
+     *            Type of Leadables to get
      * @return List of Leadables.
      */
-    public List<Leadable> getRandom(final Integer count) {
+    public List<Leadable> getRandom(final Integer count, final LeadableType type) {
         final List<Leadable> leadables = new LinkedList<Leadable>();
 
         // Get All IDs
-        final Query query = this.getEntityManager().createQuery("SELECT DISTINCT l.id FROM Leadable l");
+        String queryString = "SELECT DISTINCT l.id FROM Leadable l";
+        if(type != null){
+            queryString += " WHERE l.type = :type";
+        }
+        final Query query = this.getEntityManager().createQuery(queryString);
+        
+        if(type != null){
+            query.setParameter("type", type);
+        }
         final List<?> idList = query.getResultList();
 
         if (idList.size() < count) {
@@ -68,5 +78,16 @@ public class LeadableDao extends GenericDaoImpl<Leadable> {
         }
 
         return leadables;
+    }
+
+    /**
+     * Gets Random Leadables.
+     * 
+     * @param count
+     *            Number of Leadables.
+     * @return List of Leadables.
+     */
+    public List<Leadable> getRandom(final Integer count) {
+        return this.getRandom(count, null);
     }
 }

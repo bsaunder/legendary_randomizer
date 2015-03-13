@@ -32,6 +32,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.LeadableType;
 import net.bryansaunders.legendary.rest.ILeadableEndpoint;
 import net.bryansaunders.legendary.service.LeadableService;
 
@@ -63,9 +64,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ILeadableEndpoint#getLeadableById(java
-     * .lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#getLeadableById(java .lang.Integer)
      */
     @Override
     public Response getLeadableById(final Integer id) {
@@ -74,7 +73,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
             final Leadable leadable = this.leadableService.getLeadable(id);
             responseBuilder = responseBuilder.entity(leadable);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -83,8 +82,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#addLeadable(net.
-     * bryansaunders.legendary.model.Leadable)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#addLeadable(net. bryansaunders.legendary.model.Leadable)
      */
     @Override
     public Response addLeadable(final Leadable leadable) {
@@ -94,7 +92,8 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
             responseBuilder = responseBuilder.entity(savedLeadable);
         } catch (final EJBTransactionRolledbackException e) {
             // Really should Handle this Better.. Its for Non-Unique Names
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -103,9 +102,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ILeadableEndpoint#deleteLeadable(java
-     * .lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#deleteLeadable(java .lang.Integer)
      */
     @Override
     public Response deleteLeadable(final Integer id) {
@@ -113,7 +110,7 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
         try {
             this.leadableService.deleteLeadable(id);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -122,18 +119,17 @@ public class LeadableEndpointImpl implements ILeadableEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ILeadableEndpoint#getRandomLeadables
-     * (java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ILeadableEndpoint#getRandomLeadables (java.lang.Integer)
      */
     @Override
-    public Response getRandomLeadables(final Integer count) {
+    public Response getRandomLeadables(final Integer count, final LeadableType type) {
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         try {
-            final List<Leadable> leadablees = this.leadableService.getRandomLeadables(count);
+            final List<Leadable> leadablees = this.leadableService.getRandomLeadables(count, type);
             responseBuilder = responseBuilder.entity(leadablees);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();

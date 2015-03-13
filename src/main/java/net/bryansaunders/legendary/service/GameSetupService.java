@@ -36,6 +36,7 @@ import net.bryansaunders.legendary.model.GameSetup;
 import net.bryansaunders.legendary.model.GameSetupFactory;
 import net.bryansaunders.legendary.model.Hero;
 import net.bryansaunders.legendary.model.Leadable;
+import net.bryansaunders.legendary.model.LeadableType;
 import net.bryansaunders.legendary.model.Mastermind;
 import net.bryansaunders.legendary.model.Scheme;
 
@@ -86,11 +87,11 @@ public class GameSetupService {
         }
 
         // Get Henchman
-        List<Leadable> henchman = this.leadableDao.getRandom(setup.getHenchmanCount());
+        List<Leadable> henchman = this.leadableDao.getRandom(setup.getHenchmanCount(), LeadableType.HENCHMAN);
         setup.setHenchman(henchman);
 
         // Get Villians
-        List<Leadable> villians = this.leadableDao.getRandom(setup.getVillianCount());
+        List<Leadable> villians = this.leadableDao.getRandom(setup.getVillianCount(), LeadableType.VILLAIN);
         setup.setVillians(villians);
 
         return setup;
