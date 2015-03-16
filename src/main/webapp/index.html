@@ -27,7 +27,6 @@
 <title>Legendary Randomizer</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="app/app.css">
 </head>
 
@@ -42,37 +41,51 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </button>
-	          <a class="navbar-brand" href="#">Project name</a>
+	          <a class="navbar-brand" href="#">Legendary Randomizer</a>
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="#">Home</a></li>
-	            <li><a href="#about">About</a></li>
-	            <li><a href="#contact">Contact</a></li>
-	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="#">Action</a></li>
-	                <li><a href="#">Another action</a></li>
-	                <li><a href="#">Something else here</a></li>
-	                <li class="divider"></li>
-	                <li class="dropdown-header">Nav header</li>
-	                <li><a href="#">Separated link</a></li>
-	                <li><a href="#">One more separated link</a></li>
-	              </ul>
-	            </li>
+
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
-	            <li><a href="../navbar/">Default</a></li>
-	            <li><a href="../navbar-static-top/">Static top</a></li>
-	            <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
+
 	          </ul>
 	        </div><!--/.nav-collapse -->
 	      </div>
 	    </nav>
 
-	<div class="container" data-ng-controller="RandomizeController">
-
+	<div class="container" data-ng-controller="RandomizeController as rand" data-ng-cloak>
+		<h1 class=""> Randomizer </h1>
+		<form novalidate name"randomizeForm" class="" ng-submit="rand.Submit(randomizeForm.$valid)">
+			<div class="form-group">
+		    <label for="numberOfPlayers" class=" control-label">Number of Players</label>
+		    <div class="">
+		      <input
+						type="number"
+						class="form-control"
+						id="numberOfPlayers"
+						required
+						data-ng-model="rand.numOfPlayers">
+		    </div>
+  		</div>
+			<div class="form-group">
+				<label for="scheme" class=" control-label">Select a Scheme</label>
+				<div class="">
+					<select class="form-control" id="scheme"data-ng-model="rand.scheme">
+						<option data-ng-repeat="scheme in rand.schemes">{{scheme}}</option>
+					</select>
+				</div>
+			</div>
+		<div class="form-group">
+			<label for="mastermind" class=" control-label">Select a Mastermind</label>
+			<div class="">
+				<select class="form-control" id="mastermind"data-ng-model="rand.mastermind">
+					<option data-ng-repeat="mastermind in rand.masterminds">{{mastermind}}</option>
+				</select>
+			</div>
+		</div>
+		<button type="submit" data-ng-disabled="randomizeForm.$invalid" class="btn btn-primary pull-right"> Randomize</button>
+	</form>
 	</div>
 
 	<footer class="footer">
@@ -95,7 +108,7 @@
 
 <!-- application specific js files -->
 
-<script src="app/app.module.js"></script>\
+<script src="app/app.module.js"></script>
 <script src="app/randomize/randomize.controller.js"></script>
 </body>
 

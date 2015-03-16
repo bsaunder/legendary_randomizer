@@ -26,7 +26,9 @@
         .module('app')
         .controller('RandomizeController', RandomizeController);
 
-    function RandomizeController() {
+    RandomizeController.$inject = ['randomizeService'];
+
+    function RandomizeController(randomizeService) {
         /*jshint validthis: true */
         var vm = this;
         vm.title = 'Randomize';
@@ -34,8 +36,30 @@
         activate();
 
         function activate() {
+          vm.schemes={};
+          vm.masterMinds={};
+
+          randomizeService.getSchemes()
+          .success(getSchemesSuccess)
+          .error(getSchedmesError);
+
+          randomizeService.getMasterminds()
+          .success(getMastermindSuccess)
+          .error(getMasterMindError);
+        }
+
+        function getSchemesSuccess(schemes){
+          vm.schemes = schemes;
+        }
+        function getSchemesError(){
 
         }
 
+        function getSchemesSuccess(masterminds){
+          vm.masterminds = masterminds;
+        }
+        function getSchemesError(){
+
+        }
     }
 })();
