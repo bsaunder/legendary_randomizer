@@ -33,11 +33,11 @@ function randomizeService($http) {
   return service;
 
   function getSchemes(){
-    var url = '';
+    var url = 'http://legendary-bsaunders.rhcloud.com/rest/scheme';
     return $http.get(url);
   }
   function getMasterMinds(){
-    var url = '';
+    var url = 'http://legendary-bsaunders.rhcloud.com/rest/mastermind';
     return $http.get(url);
   }
 })();
