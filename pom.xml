@@ -488,7 +488,7 @@
 			<properties>
 				<datasource.jndi>java:jboss/datasources/MySQLDS</datasource.jndi>
 				<datasource.dialect>org.hibernate.dialect.MySQL5Dialect</datasource.dialect>
-				<datasource.mode>create</datasource.mode>
+				<datasource.mode>update</datasource.mode>
 			</properties>
 			<build>
 				<plugins>
