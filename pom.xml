@@ -67,8 +67,10 @@
 		<version.shrinkwrap>2.1.1</version.shrinkwrap>
 		<version.transaction>1.0.0.Final</version.transaction>
 		<version.wildfly>8.2.0.Final</version.wildfly>
-		
+
 		<datasource.jndi>java:jboss/datasources/Legendary</datasource.jndi>
+		<datasource.dialect>org.hibernate.dialect.H2Dialect</datasource.dialect>
+		<datasource.mode>update</datasource.mode>
 	</properties>
 
 	<dependencyManagement>
@@ -485,6 +487,8 @@
 			<id>openshift</id>
 			<properties>
 				<datasource.jndi>java:jboss/datasources/MySQLDS</datasource.jndi>
+				<datasource.dialect>org.hibernate.dialect.MySQL5Dialect</datasource.dialect>
+				<datasource.mode>create</datasource.mode>
 			</properties>
 			<build>
 				<plugins>

@@ -29,9 +29,9 @@
     <persistence-unit name="legendary">
         <jta-data-source>${datasource.jndi}</jta-data-source>
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="${datasource.mode}"/>
             <property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.dialect" value="${datasource.dialect}"/>
         </properties>
     </persistence-unit>
 </persistence>
