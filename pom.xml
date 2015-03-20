@@ -67,6 +67,8 @@
 		<version.shrinkwrap>2.1.1</version.shrinkwrap>
 		<version.transaction>1.0.0.Final</version.transaction>
 		<version.wildfly>8.2.0.Final</version.wildfly>
+		
+		<datasource.jndi>java:jboss/datasources/Legendary</datasource.jndi>
 	</properties>
 
 	<dependencyManagement>
@@ -226,6 +228,10 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/META-INF</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
@@ -477,6 +483,9 @@
 	<profiles>
 		<profile>
 			<id>openshift</id>
+			<properties>
+				<datasource.jndi>java:jboss/datasources/MySQLDS</datasource.jndi>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
