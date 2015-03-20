@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import net.bryansaunders.legendary.model.Leadable;
 import net.bryansaunders.legendary.model.LeadableType;
@@ -89,5 +90,24 @@ public class LeadableDao extends GenericDaoImpl<Leadable> {
      */
     public List<Leadable> getRandom(final Integer count) {
         return this.getRandom(count, null);
+    }
+
+    /**
+     * Gets the Leadable for the Specified Name.
+     * 
+     * @param name
+     *            Leadable Name
+     * @return Leadable
+     */
+    public Leadable getByName(final String name) {
+        Leadable leadable = null;
+
+        final String queryString = "SELECT l FROM Leadable l WHERE l.name = :name";
+        final TypedQuery<Leadable> query = this.getEntityManager().createQuery(queryString, Leadable.class);
+        query.setParameter("name", name);
+
+        leadable = query.getSingleResult();
+
+        return leadable;
     }
 }

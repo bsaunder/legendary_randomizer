@@ -161,6 +161,11 @@
 			<version>${version.resteasy}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-multipart-provider</artifactId>
+			<version>${version.resteasy}</version>
+		</dependency>
 
 		<!-- JPA -->
 		<dependency>

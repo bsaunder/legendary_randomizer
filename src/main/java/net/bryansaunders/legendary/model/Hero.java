@@ -168,8 +168,9 @@ public class Hero extends LegendaryEntity {
      */
     @Override
     public String toString() {
-        return "Hero [affiliation=" + this.affiliation + ", commonTypes=" + this.commonTypes + ", uncommonTypes="
-                + this.uncommonTypes + ", rareTypes=" + this.rareTypes + "]";
+        return "Hero [name=" + this.getName() + ", set=" + this.getCardSet() + ", affiliation=" + this.affiliation
+                + ", commonTypes=" + this.commonTypes + ", uncommonTypes=" + this.uncommonTypes + ", rareTypes="
+                + this.rareTypes + "]";
     }
 
 }
