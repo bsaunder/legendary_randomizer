@@ -21,9 +21,20 @@ package net.bryansaunders.legendary.model;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
-
+/**
+ * Builds Game Setups.
+ * 
+ * @author Bryan Saunders <btsaunde@gmail.com>
+ * 
+ */
 public final class GameSetupFactory {
+    
+    /**
+     * Private Constructor.
+     */
+    private GameSetupFactory() {
+     // Do Nothing.   
+    }
 
     /**
      * Creates a Default Game Setup.
@@ -32,15 +43,15 @@ public final class GameSetupFactory {
      *            Number of Players
      * @return Game Setup Object with Defaults
      */
-    public static GameSetup createDefaultSetup(Integer playerCount) {
-        GameSetup setup = new GameSetup();
+    public static GameSetup createDefaultSetup(final Integer playerCount) {
+        final GameSetup setup = new GameSetup();
 
         // Standard Defaults
         setup.setPlayers(playerCount);
         setup.setMasterStrikeCount(5);
         setup.setWoundDeckCount(30);
         setup.setBystanderDeckCount(24);
-        
+
         switch (playerCount) {
             case 2:
                 setup.setHeroCount(5);

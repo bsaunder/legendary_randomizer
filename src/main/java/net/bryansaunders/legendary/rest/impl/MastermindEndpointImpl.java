@@ -52,8 +52,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.IMastermindEndpoint#getAllMasterminds()
+     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#getAllMasterminds()
      */
     @Override
     public Response getAllMasterminds() {
@@ -64,9 +63,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.IMastermindEndpoint#getMastermindById
-     * (java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#getMastermindById (java.lang.Integer)
      */
     @Override
     public Response getMastermindById(final Integer id) {
@@ -75,7 +72,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
             final Mastermind mastermind = this.mastermindService.getMastermind(id);
             responseBuilder = responseBuilder.entity(mastermind);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -84,8 +81,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.IMastermindEndpoint#addMastermind(net
+     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#addMastermind(net
      * .bryansaunders.legendary.model.Mastermind)
      */
     @Override
@@ -96,7 +92,8 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
             responseBuilder = responseBuilder.entity(savedMastermind);
         } catch (final EJBTransactionRolledbackException e) {
             // Really should Handle this Better.. Its for Non-Unique Names
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -105,9 +102,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.IMastermindEndpoint#deleteMastermind
-     * (java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#deleteMastermind (java.lang.Integer)
      */
     @Override
     public Response deleteMastermind(final Integer id) {
@@ -115,7 +110,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
         try {
             this.mastermindService.deleteMastermind(id);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -124,9 +119,7 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.IMastermindEndpoint#getRandomMasterminds
-     * (java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.IMastermindEndpoint#getRandomMasterminds (java.lang.Integer)
      */
     @Override
     public Response getRandomMasterminds(final Integer count) {
@@ -135,7 +128,8 @@ public class MastermindEndpointImpl implements IMastermindEndpoint {
             final List<Mastermind> masterminds = this.mastermindService.getRandomMasterminds(count);
             responseBuilder = responseBuilder.entity(masterminds);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();

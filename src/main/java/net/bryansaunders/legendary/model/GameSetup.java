@@ -33,7 +33,7 @@ import java.util.List;
 public class GameSetup {
 
     /**
-     * Number of Players
+     * Number of Players.
      */
     private Integer players;
 
@@ -112,7 +112,7 @@ public class GameSetup {
      * @param pWoundDeckCount
      *            the woundDeckCount to set
      */
-    public void setWoundDeckCount(Integer pWoundDeckCount) {
+    public void setWoundDeckCount(final Integer pWoundDeckCount) {
         this.woundDeckCount = pWoundDeckCount;
     }
 
@@ -131,7 +131,7 @@ public class GameSetup {
      * @param pBystanderDeckCount
      *            the bystanderDeckCount to set
      */
-    public void setBystanderDeckCount(Integer pBystanderDeckCount) {
+    public void setBystanderDeckCount(final Integer pBystanderDeckCount) {
         this.bystanderDeckCount = pBystanderDeckCount;
     }
 
@@ -150,7 +150,7 @@ public class GameSetup {
      * @param pHeroCount
      *            the heroCount to set
      */
-    public void setHeroCount(Integer pHeroCount) {
+    public void setHeroCount(final Integer pHeroCount) {
         this.heroCount = pHeroCount;
     }
 
@@ -169,7 +169,7 @@ public class GameSetup {
      * @param pVillianCount
      *            the villianCount to set
      */
-    public void setVillianCount(Integer pVillianCount) {
+    public void setVillianCount(final Integer pVillianCount) {
         this.villianCount = pVillianCount;
     }
 
@@ -188,7 +188,7 @@ public class GameSetup {
      * @param pHenchmanCount
      *            the henchmanCount to set
      */
-    public void setHenchmanCount(Integer pHenchmanCount) {
+    public void setHenchmanCount(final Integer pHenchmanCount) {
         this.henchmanCount = pHenchmanCount;
     }
 
@@ -207,7 +207,7 @@ public class GameSetup {
      * @param pMasterStrikeCount
      *            the masterStrikeCount to set
      */
-    public void setMasterStrikeCount(Integer pMasterStrikeCount) {
+    public void setMasterStrikeCount(final Integer pMasterStrikeCount) {
         this.masterStrikeCount = pMasterStrikeCount;
     }
 
@@ -226,7 +226,7 @@ public class GameSetup {
      * @param pHeroes
      *            the heroes to set
      */
-    public void setHeroes(List<Hero> pHeroes) {
+    public void setHeroes(final List<Hero> pHeroes) {
         this.heroes = pHeroes;
     }
 
@@ -245,7 +245,7 @@ public class GameSetup {
      * @param pVillians
      *            the villians to set
      */
-    public void setVillians(List<Leadable> pVillians) {
+    public void setVillians(final List<Leadable> pVillians) {
         this.villians = pVillians;
     }
 
@@ -264,7 +264,7 @@ public class GameSetup {
      * @param pHenchman
      *            the henchman to set
      */
-    public void setHenchman(List<Leadable> pHenchman) {
+    public void setHenchman(final List<Leadable> pHenchman) {
         this.henchman = pHenchman;
     }
 
@@ -283,7 +283,7 @@ public class GameSetup {
      * @param pScheme
      *            the scheme to set
      */
-    public void setScheme(Scheme pScheme) {
+    public void setScheme(final Scheme pScheme) {
         this.scheme = pScheme;
     }
 
@@ -302,7 +302,7 @@ public class GameSetup {
      * @param pMastermind
      *            the mastermind to set
      */
-    public void setMastermind(Mastermind pMastermind) {
+    public void setMastermind(final Mastermind pMastermind) {
         this.mastermind = pMastermind;
     }
 
@@ -321,7 +321,7 @@ public class GameSetup {
      * @param pBystanderVillianCount
      *            the bystanderVillianCount to set
      */
-    public void setBystanderVillianCount(Integer pBystanderVillianCount) {
+    public void setBystanderVillianCount(final Integer pBystanderVillianCount) {
         this.bystanderVillianCount = pBystanderVillianCount;
     }
 
@@ -340,7 +340,7 @@ public class GameSetup {
      * @param pPlayers
      *            the players to set
      */
-    public void setPlayers(Integer pPlayers) {
+    public void setPlayers(final Integer pPlayers) {
         this.players = pPlayers;
     }
 

@@ -39,7 +39,10 @@ import net.bryansaunders.legendary.service.GameSetupService;
  * 
  */
 public class SetupEndpointImpl implements ISetupEndpoint {
-    
+
+    /**
+     * Setup Service.
+     */
     @Inject
     private GameSetupService setupService;
 
@@ -50,17 +53,18 @@ public class SetupEndpointImpl implements ISetupEndpoint {
      * java.lang.Integer)
      */
     @Override
-    public Response getGameSetup(Integer playerCount, Integer schemeId, Integer mastermindId) {
+    public Response getGameSetup(final Integer playerCount, final Integer schemeId, final Integer mastermindId) {
         ResponseBuilder responseBuilder = Response.status(Status.OK);
 
         try {
-            GameSetup setup = this.setupService.buildGameSetup(playerCount, schemeId, mastermindId);
+            final GameSetup setup = this.setupService.buildGameSetup(playerCount, schemeId, mastermindId);
             responseBuilder = responseBuilder.entity(setup);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
             e.printStackTrace();
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
             e.printStackTrace();
         }
 

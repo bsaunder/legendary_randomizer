@@ -29,8 +29,8 @@
 	</issueManagement>
 
 	<ciManagement>
-		<system>Travis-CI</system>
-		<url>https://travis-ci.org/bsaunder/legendary_randomizer</url>
+		<system>Jenkins</system>
+		<url>https://jenkins-bsaunders.rhcloud.com</url>
 	</ciManagement>
 
 	<properties>
@@ -485,6 +485,30 @@
 						<configuration>
 							<outputDirectory>deployments</outputDirectory>
 							<warName>ROOT</warName>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${version.plugin.javadoc}</version>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${version.plugin.surefire}</version>
+						<configuration>
+							<!-- Skip Tests on Open Shift Builds -->
+							<skipTests>true</skipTests>
 						</configuration>
 					</plugin>
 				</plugins>

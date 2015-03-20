@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest.impl;
  * #L%
  */
 
-
 import java.util.List;
 
 import javax.ejb.EJBTransactionRolledbackException;
@@ -43,7 +42,7 @@ import net.bryansaunders.legendary.service.SchemeService;
  * 
  */
 public class SchemeEndpointImpl implements ISchemeEndpoint {
-    
+
     /**
      * Scheme Service.
      */
@@ -53,8 +52,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ISchemeEndpoint#getAllSchemes()
+     * @see net.bryansaunders.legendary.rest.ISchemeEndpoint#getAllSchemes()
      */
     @Override
     public Response getAllSchemes() {
@@ -65,9 +63,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ISchemeEndpoint#getSchemeById
-     * (java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ISchemeEndpoint#getSchemeById (java.lang.Integer)
      */
     @Override
     public Response getSchemeById(final Integer id) {
@@ -76,7 +72,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
             final Scheme scheme = this.schemeService.getScheme(id);
             responseBuilder = responseBuilder.entity(scheme);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -85,9 +81,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ISchemeEndpoint#addScheme(net
-     * .bryansaunders.legendary.model.Scheme)
+     * @see net.bryansaunders.legendary.rest.ISchemeEndpoint#addScheme(net .bryansaunders.legendary.model.Scheme)
      */
     @Override
     public Response addScheme(final Scheme scheme) {
@@ -97,7 +91,8 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
             responseBuilder = responseBuilder.entity(savedScheme);
         } catch (final EJBTransactionRolledbackException e) {
             // Really should Handle this Better.. Its for Non-Unique Names
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -106,9 +101,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ISchemeEndpoint#deleteScheme
-     * (java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ISchemeEndpoint#deleteScheme (java.lang.Integer)
      */
     @Override
     public Response deleteScheme(final Integer id) {
@@ -116,7 +109,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
         try {
             this.schemeService.deleteScheme(id);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -125,9 +118,7 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * net.bryansaunders.legendary.rest.ISchemeEndpoint#getRandomSchemes
-     * (java.lang.Integer)
+     * @see net.bryansaunders.legendary.rest.ISchemeEndpoint#getRandomSchemes (java.lang.Integer)
      */
     @Override
     public Response getRandomSchemes(final Integer count) {
@@ -136,7 +127,8 @@ public class SchemeEndpointImpl implements ISchemeEndpoint {
             final List<Scheme> schemes = this.schemeService.getRandomSchemes(count);
             responseBuilder = responseBuilder.entity(schemes);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();

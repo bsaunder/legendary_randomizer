@@ -66,7 +66,7 @@ public class Scheme extends LegendaryEntity {
      * @param pSpecialInstructions
      *            the specialInstructions to set
      */
-    public void setSpecialInstructions(Set<String> pSpecialInstructions) {
+    public void setSpecialInstructions(final Set<String> pSpecialInstructions) {
         this.specialInstructions = pSpecialInstructions;
     }
 

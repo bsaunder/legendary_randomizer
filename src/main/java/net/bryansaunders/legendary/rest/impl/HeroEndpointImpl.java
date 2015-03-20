@@ -71,7 +71,7 @@ public class HeroEndpointImpl implements IHeroEndpoint {
             final Hero hero = this.heroService.getHero(id);
             responseBuilder = responseBuilder.entity(hero);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -84,14 +84,15 @@ public class HeroEndpointImpl implements IHeroEndpoint {
      */
     @Override
     public Response addHero(final Hero hero) {
-          
+
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         try {
             final Hero savedHero = this.heroService.saveHero(hero);
             responseBuilder = responseBuilder.entity(savedHero);
         } catch (final EJBTransactionRolledbackException e) {
             // Really should Handle this Better.. Its for Non-Unique Names
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -108,7 +109,7 @@ public class HeroEndpointImpl implements IHeroEndpoint {
         try {
             this.heroService.deleteHero(id);
         } catch (final NoResultException e) {
-            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.NOT_FOUND).entity("{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();
@@ -126,7 +127,8 @@ public class HeroEndpointImpl implements IHeroEndpoint {
             final List<Hero> heroes = this.heroService.getRandomHeroes(count);
             responseBuilder = responseBuilder.entity(heroes);
         } catch (final IllegalArgumentException e) {
-            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity("{\"error\":\""+e.getMessage()+"\"}");
+            responseBuilder = responseBuilder.status(Status.BAD_REQUEST).entity(
+                    "{\"error\":\"" + e.getMessage() + "\"}");
         }
 
         return responseBuilder.build();

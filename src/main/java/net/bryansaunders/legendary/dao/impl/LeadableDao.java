@@ -53,12 +53,12 @@ public class LeadableDao extends GenericDaoImpl<Leadable> {
 
         // Get All IDs
         String queryString = "SELECT DISTINCT l.id FROM Leadable l";
-        if(type != null){
+        if (type != null) {
             queryString += " WHERE l.type = :type";
         }
         final Query query = this.getEntityManager().createQuery(queryString);
-        
-        if(type != null){
+
+        if (type != null) {
             query.setParameter("type", type);
         }
         final List<?> idList = query.getResultList();

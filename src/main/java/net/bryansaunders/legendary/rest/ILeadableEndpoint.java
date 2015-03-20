@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -96,6 +95,8 @@ public interface ILeadableEndpoint {
      * 
      * @param count
      *            Leadable count.
+     * @param type
+     *            Leabable Type.
      * 
      * @return JSON String
      */

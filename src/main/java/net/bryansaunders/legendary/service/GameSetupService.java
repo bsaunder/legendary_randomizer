@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.service;
  * #L%
  */
 
-
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -49,49 +48,72 @@ import net.bryansaunders.legendary.model.Scheme;
 @Stateless
 public class GameSetupService {
 
+    /**
+     * Scheme Dao.
+     */
     @Inject
     private SchemeDao schemeDao;
 
+    /**
+     * Mastermind Dao.
+     */
     @Inject
     private MastermindDao mastermindDao;
 
+    /**
+     * Hero Dao.
+     */
     @Inject
     private HeroDao heroDao;
 
+    /**
+     * Leadable Dao.
+     */
     @Inject
     private LeadableDao leadableDao;
 
-    public GameSetup buildGameSetup(Integer playerCount, Integer schemeId, Integer mastermindId) {
-        GameSetup setup = GameSetupFactory.createDefaultSetup(playerCount);
+    /**
+     * Build a Game Setup based on the Number of Players, Scheme, and Mastermind.
+     * 
+     * @param pPlayerCount
+     *            Number of Players.
+     * @param pSchemeId
+     *            Scheme.
+     * @param pMastermindId
+     *            Mastermind.
+     * @return Game Setup
+     */
+    public GameSetup buildGameSetup(final Integer pPlayerCount, final Integer pSchemeId, final Integer pMastermindId) {
+        final GameSetup setup = GameSetupFactory.createDefaultSetup(pPlayerCount);
 
         // Get Scheme
-        if (schemeId != null) {
-            Scheme scheme = this.schemeDao.get(schemeId);
+        if (pSchemeId != null) {
+            final Scheme scheme = this.schemeDao.get(pSchemeId);
             setup.setScheme(scheme);
         } else {
-            Scheme scheme = this.schemeDao.getRandom(1).get(0);
+            final Scheme scheme = this.schemeDao.getRandom(1).get(0);
             setup.setScheme(scheme);
         }
 
         // Get Heroes
-        List<Hero> heroes = this.heroDao.getRandom(setup.getHeroCount());
+        final List<Hero> heroes = this.heroDao.getRandom(setup.getHeroCount());
         setup.setHeroes(heroes);
 
         // Get Mastermind
-        if (mastermindId != null) {
-            Mastermind mastermind = this.mastermindDao.get(mastermindId);
+        if (pMastermindId != null) {
+            final Mastermind mastermind = this.mastermindDao.get(pMastermindId);
             setup.setMastermind(mastermind);
         } else {
-            Mastermind mastermind = this.mastermindDao.getRandom(1).get(0);
+            final Mastermind mastermind = this.mastermindDao.getRandom(1).get(0);
             setup.setMastermind(mastermind);
         }
 
         // Get Henchman
-        List<Leadable> henchman = this.leadableDao.getRandom(setup.getHenchmanCount(), LeadableType.HENCHMAN);
+        final List<Leadable> henchman = this.leadableDao.getRandom(setup.getHenchmanCount(), LeadableType.HENCHMAN);
         setup.setHenchman(henchman);
 
         // Get Villians
-        List<Leadable> villians = this.leadableDao.getRandom(setup.getVillianCount(), LeadableType.VILLAIN);
+        final List<Leadable> villians = this.leadableDao.getRandom(setup.getVillianCount(), LeadableType.VILLAIN);
         setup.setVillians(villians);
 
         return setup;
