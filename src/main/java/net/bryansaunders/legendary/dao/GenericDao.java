@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.dao;
  * #L%
  */
 
-
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -68,7 +67,8 @@ public interface GenericDao<T extends LegendaryEntity> {
     /**
      * Retrieve an persisted objects using the given ids as primary keys.
      * 
-     * NoResultException thrown if the entity is not found, IllegalArgumentException thrown when the ID list is invalid
+     * NoResultException thrown if the entity is not found,
+     * IllegalArgumentException thrown when the ID list is invalid
      * 
      * @param ids
      *            objects's ids
@@ -93,7 +93,8 @@ public interface GenericDao<T extends LegendaryEntity> {
     T save(T object);
 
     /**
-     * Save all changes made to objects. IllegalArgumentException thrown when the ID list is invalid
+     * Save all changes made to objects. IllegalArgumentException thrown when
+     * the ID list is invalid
      * 
      * @param objects
      *            objects
@@ -110,7 +111,8 @@ public interface GenericDao<T extends LegendaryEntity> {
     void delete(Integer id);
 
     /**
-     * Remove objects by given ids. IllegalArgumentException thrown when the ID list is invalid
+     * Remove objects by given ids. IllegalArgumentException thrown when the ID
+     * list is invalid
      * 
      * @param ids
      *            objects's pk
@@ -126,7 +128,8 @@ public interface GenericDao<T extends LegendaryEntity> {
     void delete(T object);
 
     /**
-     * Remove objects. IllegalArgumentException thrown when the ID list is invalid
+     * Remove objects. IllegalArgumentException thrown when the ID list is
+     * invalid
      * 
      * @param objects
      *            objects to delete

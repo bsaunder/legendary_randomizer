@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.dao.impl;
  * #L%
  */
 
-
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.security.AccessController;
@@ -34,6 +33,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -235,7 +235,7 @@ public class GenericDaoImpl<T extends LegendaryEntity> implements GenericDao<T> 
             this.delete(entity);
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */

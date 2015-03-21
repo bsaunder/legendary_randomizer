@@ -25,6 +25,7 @@ package net.bryansaunders.legendary.dao.impl;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -52,6 +53,86 @@ public class LeadableDao extends GenericDaoImpl<Leadable> {
     public List<Leadable> getRandom(final Integer count, final LeadableType type) {
         final List<Leadable> leadables = new LinkedList<Leadable>();
 
+        final List<?> idList = this.getLeadableIds(type);
+
+        if (idList.size() < count) {
+            throw new IllegalArgumentException("Not Enough Leadables");
+        }
+
+        // Shuffle
+        Collections.shuffle(idList);
+
+        // Get Leadables
+        for (int i = 0; i < count; i++) {
+            final Integer id = (Integer) idList.get(i);
+            final Leadable leadable = this.get(id);
+            leadables.add(leadable);
+        }
+
+        return leadables;
+    }
+
+    /**
+     * Get Random Leadables with Exclusions.
+     * 
+     * @param count
+     *            Number of Leadables
+     * @param type
+     *            Type of Leadable
+     * @param excluded
+     *            Leadables to Exclude
+     * @return List of Leadables
+     */
+    public List<Leadable> getRandomAndExclude(final Integer count, final LeadableType type, 
+            final Set<Leadable> excluded) {
+        final List<Leadable> leadables = new LinkedList<Leadable>();
+
+        final List<?> idList = this.getLeadableIds(type);
+
+        System.out.println(">>> Pre Exclude");
+        for (int i = 0; i < count; i++) {
+            final Integer id = (Integer) idList.get(i);
+            System.out.println("> " + id);
+        }
+        
+        // Exclude Leadables
+        for (final Leadable exclude : excluded) {
+            final Integer id = exclude.getId();
+            final boolean result = idList.remove(id);
+            System.out.println(">>> Excluding " + id + " - " + result);
+        }
+        
+        System.out.println(">>> Post Exclude");
+        for (int i = 0; i < count; i++) {
+            final Integer id = (Integer) idList.get(i);
+            System.out.println("> " + id);
+        }
+
+        if (idList.size() < count) {
+            throw new IllegalArgumentException("Not Enough Leadables");
+        }
+
+        // Shuffle
+        Collections.shuffle(idList);
+
+        // Get Leadables
+        for (int i = 0; i < count; i++) {
+            final Integer id = (Integer) idList.get(i);
+            final Leadable leadable = this.get(id);
+            leadables.add(leadable);
+        }
+
+        return leadables;
+    }
+
+    /**
+     * Gets a List of all ID's.
+     * 
+     * @param type
+     *            Leadable Types
+     * @return List of ID's
+     */
+    private List<?> getLeadableIds(final LeadableType type) {
         // Get All IDs
         String queryString = "SELECT DISTINCT l.id FROM Leadable l";
         if (type != null) {
@@ -64,21 +145,7 @@ public class LeadableDao extends GenericDaoImpl<Leadable> {
         }
         final List<?> idList = query.getResultList();
 
-        if (idList.size() < count) {
-            throw new IllegalArgumentException("Not Enough Leadables");
-        }
-
-        // Shuffle
-        Collections.shuffle(idList);
-
-        // Get Heroes
-        for (int i = 0; i < count; i++) {
-            final Integer id = (Integer) idList.get(i);
-            final Leadable leadable = this.get(id);
-            leadables.add(leadable);
-        }
-
-        return leadables;
+        return idList;
     }
 
     /**
