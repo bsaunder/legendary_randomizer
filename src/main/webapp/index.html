@@ -72,7 +72,7 @@
 				<label for="scheme" class=" control-label">Select a Scheme</label>
 				<div class="">
 					<select class="form-control" id="scheme"data-ng-model="rand.scheme">
-						<option data-ng-repeat="scheme in rand.schemes">{{scheme}}</option>
+						<option data-ng-repeat="scheme in rand.schemes">{{scheme.name}}</option>
 					</select>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 			<label for="mastermind" class=" control-label">Select a Mastermind</label>
 			<div class="">
 				<select class="form-control" id="mastermind"data-ng-model="rand.mastermind">
-					<option data-ng-repeat="mastermind in rand.masterminds">{{mastermind}}</option>
+					<option data-ng-repeat="mastermind in rand.masterminds">{{mastermind.name}}</option>
 				</select>
 			</div>
 		</div>
