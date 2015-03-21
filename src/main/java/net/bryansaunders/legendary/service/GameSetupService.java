@@ -22,7 +22,9 @@ package net.bryansaunders.legendary.service;
  * #L%
  */
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -73,7 +75,8 @@ public class GameSetupService {
     private LeadableDao leadableDao;
 
     /**
-     * Build a Game Setup based on the Number of Players, Scheme, and Mastermind.
+     * Build a Game Setup based on the Number of Players, Scheme, and
+     * Mastermind.
      * 
      * @param pPlayerCount
      *            Number of Players.
@@ -108,12 +111,27 @@ public class GameSetupService {
             setup.setMastermind(mastermind);
         }
 
+        // Exclude AlwaysLeads
+        Set<Leadable> excludedHenchman = new HashSet<Leadable>();
+        Set<Leadable> excludedVillians = new HashSet<Leadable>();
+        for (Leadable leadable : setup.getMastermind().getAlwaysLeads()) {
+            if (leadable.getType() == LeadableType.HENCHMAN) {
+                setup.setHenchmanCount(setup.getHenchmanCount() - 1);
+                setup.getHenchman().add(leadable);
+                excludedHenchman.add(leadable);
+            } else {
+                setup.setVillianCount(setup.getVillianCount() - 1);
+                setup.getVillians().add(leadable);
+                excludedVillians.add(leadable);
+            }
+        }
+
         // Get Henchman
-        final List<Leadable> henchman = this.leadableDao.getRandom(setup.getHenchmanCount(), LeadableType.HENCHMAN);
+        final List<Leadable> henchman = this.leadableDao.getRandomAndExclude(setup.getHenchmanCount(), LeadableType.HENCHMAN, excludedHenchman);
         setup.setHenchman(henchman);
 
         // Get Villians
-        final List<Leadable> villians = this.leadableDao.getRandom(setup.getVillianCount(), LeadableType.VILLAIN);
+        final List<Leadable> villians = this.leadableDao.getRandomAndExclude(setup.getVillianCount(), LeadableType.VILLAIN, excludedVillians);
         setup.setVillians(villians);
 
         return setup;
