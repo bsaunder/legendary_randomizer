@@ -33,33 +33,55 @@
         var vm = this;
         vm.title = 'Randomize';
 
+        vm.getSetup = getSetup;
         activate();
 
         function activate() {
+          vm.setup = null;
+          vm.setupOptions = {};
+          vm.setupOptions.numOfPlayers = null;
+          vm.setupOptions.selectedMastermind = null;
+          vm.setupOptions.selectedScheme = null;
+
           vm.schemes={};
           vm.masterminds={};
 
           randomizeService.getSchemes()
-          .success(getSchemesSuccess)
-          .error(getSchemesError);
+          .then(getSchemesSuccess, getSchemesError);
 
           randomizeService.getMasterminds()
-          .success(getMastermindSuccess)
-          .error(getMastermindError);
+          .then(getMastermindSuccess, getMastermindError);
         }
 
-        function getSchemesSuccess(schemes){
-          vm.schemes = schemes;
+        function getSchemesSuccess(result){
+          vm.schemes = result.data;
         }
-        function getSchemesError(data){
-          alert("Errors");
+        function getSchemesError(result){
+          alert('Errors');
         }
 
-        function getMastermindSuccess(masterminds){
-          vm.masterminds = masterminds;
+        function getMastermindSuccess(result){
+          vm.masterminds = result.data;
         }
-        function getMastermindError(data){
-          alert("Errors");
+        function getMastermindError(result){
+          alert('Errors');
+        }
+        function getSetup(isValid){
+          if(isValid)
+          {
+            randomizeService.getSetup(vm.setupOptions)
+            .then(getSetupSuccess, getSetupError);
+          }
+          else
+          {
+            alert("Invalid");
+          }
+        }
+        function getSetupSuccess(result){
+          vm.setup = result.data;
+        }
+        function getSetupError(result){
+          alert("Error getting setup");
         }
     }
 })();

@@ -56,7 +56,7 @@
 
 	<div class="container" data-ng-controller="RandomizeController as rand" data-ng-cloak>
 		<h1 class="">Randomizer</h1>
-		<form novalidate name="randomizeForm" class="" ng-submit="rand.Submit(randomizeForm.$valid)">
+		<form novalidate name="randomizeForm" class="" ng-submit="rand.getSetup(randomizeForm.$valid)">
 			<div class="form-group">
 		    <label for="numberOfPlayers" class=" control-label">Number of Players</label>
 		    <div class="">
@@ -64,29 +64,62 @@
 						type="number"
 						class="form-control"
 						id="numberOfPlayers"
+            max="5"
+            min = "2"
 						required
-						data-ng-model="rand.numOfPlayers">
+						data-ng-model="rand.setupOptions.numOfPlayers">
 		    </div>
   		</div>
 			<div class="form-group">
 				<label for="scheme" class=" control-label">Select a Scheme</label>
 				<div class="">
-					<select class="form-control" id="scheme"data-ng-model="rand.scheme">
-						<option data-ng-repeat="scheme in rand.schemes">{{scheme.name}}</option>
-					</select>
+          <select class="form-control"
+                  data-ng-model="rand.setupOptions.selectedScheme"
+                  data-ng-options="scheme.name for scheme in rand.schemes">
+          </select>
 				</div>
 			</div>
 		<div class="form-group">
 			<label for="mastermind" class=" control-label">Select a Mastermind</label>
 			<div class="">
-				<select class="form-control" id="mastermind"data-ng-model="rand.mastermind">
-					<option data-ng-repeat="mastermind in rand.masterminds">{{mastermind.name}}</option>
-				</select>
+
+        <select class="form-control"
+                data-ng-model="rand.setupOptions.selectedMastermind"
+                data-ng-options="mastermind.name for mastermind in rand.masterminds">
+        </select>
 			</div>
 		</div>
 		<button type="submit" data-ng-disabled="randomizeForm.$invalid" class="btn btn-primary pull-right"> Randomize</button>
 	</form>
+  <div class="panel panel-primary" data-ng-if="rand.setup !== null">
+    <div class="panel-heading">
+      <h3 class="panel-title">Game Setup</h3>
+    </div>
+    <div class="panel-body">
+      <div class="">
+        <h4>Setup</h4>
+        <span>Players: {{rand.setup.players}}</span>
+        <span>Wound Deck Count: {{rand.setup.woundDeckCount}}</span>
+        <span>Bystander Deck Count: {{rand.setup.bystanderDeckCount}}</span>
+        <span>Bystanders in the Villian Deck: {{rand.setup.bystanderVillianCount}}</span>
+        <span>Masterstrikes: {{rand.setup.masterStrikeCount}}</span>
+        <h4>Scheme</h4>
+        <span>{{rand.setup.scheme.name}}</span>
+        <span> Scheme Instructions: </span>
+
+        <span data-ng-repeat="instruction in rand.setup.scheme.specialInstructions">{{instruction}}</span>
+        <h4>Heros: {{rand.setup.heroCount}}</h4>
+        <span data-ng-repeat="hero in rand.setup.heros">{{hero.name}}</span>
+        <h4>Bad Guys </h4>
+        <span>Mastermind: {{}}</span> 
+      </div>
+    </div>
+  </div>
+
 	</div>
+
+
+
 
 	<footer class="footer">
 	<div class="container">
