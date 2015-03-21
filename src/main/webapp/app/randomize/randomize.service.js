@@ -28,16 +28,31 @@ angular
 function randomizeService($http) {
   var service = {
     getSchemes: getSchemes,
-    getMasterminds: getMasterminds
+    getMasterminds : getMasterminds,
+    getSetup: getSetup
   };
   return service;
 
   function getSchemes(){
-    var url = 'rest/scheme';
+    var url = 'http://legendary-bsaunders.rhcloud.com/rest/scheme';
     return $http.get(url);
   }
   function getMasterminds(){
-    var url = 'rest/mastermind';
+    var url = 'http://legendary-bsaunders.rhcloud.com/rest/mastermind';
     return $http.get(url);
+  }
+  function getSetup(setup){
+    var url = 'http://legendary-bsaunders.rhcloud.com/rest/setup/{0}';//"?scheme={1}&mastermind={2}";
+    url = url.replace('{0}', setup.numOfPlayers);
+    if(setup.selectedMastermind || setup.selectedScheme){
+      url = url + '?';
+      if(setup.selectedMastermind){
+        url = url + 'scheme=' + setup.selectedScheme.id + '&';
+      }
+      if(setup.selectedMastermind){
+        url = url + 'mastemind=' + setup.selectedMastermind.id;
+      }
+      return $http.get(url);
+    }
   }
 }})();
