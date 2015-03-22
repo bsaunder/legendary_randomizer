@@ -43,9 +43,21 @@ function randomizeService($http) {
   }
   function getSetup(setup){
     var url = 'http://bts-fsw.airdns.org:30454/rest/setup/{0}?scheme={1}&mastermind={2}';
+    
     url = url.replace('{0}', setup.numOfPlayers);
-    url = url.replace('{1}', setup.selectedScheme.id);
-    url = url.replace('{2}', setup.selectedMastermind.id);
+    
+    if(setup.selectedScheme){
+    	url = url.replace('{1}', setup.selectedScheme.id);
+    }else{
+    	url = url.replace('{1}', -1);
+    }
+    
+    if(setup.selectedMastermind){
+    	url = url.replace('{2}', setup.selectedMastermind.id);
+    }else{
+    	url = url.replace('{2}', -1);
+    }
+    
     return $http.get(url);
   }
 }})();
