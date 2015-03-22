@@ -86,11 +86,12 @@ public class GameSetupService {
      *            Mastermind.
      * @return Game Setup
      */
-    public GameSetup buildGameSetup(final Integer pPlayerCount, final Integer pSchemeId, final Integer pMastermindId) {
+    public GameSetup buildGameSetup(final Integer pPlayerCount, final Integer pSchemeId, 
+            final Integer pMastermindId) {
         final GameSetup setup = GameSetupFactory.createDefaultSetup(pPlayerCount);
 
         // Get Scheme
-        if (pSchemeId != null) {
+        if (pSchemeId != null && pSchemeId > 0) {
             final Scheme scheme = this.schemeDao.get(pSchemeId);
             setup.setScheme(scheme);
         } else {
@@ -103,7 +104,7 @@ public class GameSetupService {
         setup.setHeroes(heroes);
 
         // Get Mastermind
-        if (pMastermindId != null) {
+        if (pMastermindId != null && pMastermindId > 0) {
             final Mastermind mastermind = this.mastermindDao.get(pMastermindId);
             setup.setMastermind(mastermind);
         } else {
@@ -112,8 +113,8 @@ public class GameSetupService {
         }
 
         // Exclude AlwaysLeads
-        Set<Leadable> excludedHenchman = new HashSet<Leadable>();
-        Set<Leadable> excludedVillians = new HashSet<Leadable>();
+        final Set<Leadable> excludedHenchman = new HashSet<Leadable>();
+        final Set<Leadable> excludedVillians = new HashSet<Leadable>();
         for (Leadable leadable : setup.getMastermind().getAlwaysLeads()) {
             if (leadable.getType() == LeadableType.HENCHMAN) {
                 setup.setHenchmanCount(setup.getHenchmanCount() - 1);
@@ -127,12 +128,14 @@ public class GameSetupService {
         }
 
         // Get Henchman
-        final List<Leadable> henchman = this.leadableDao.getRandomAndExclude(setup.getHenchmanCount(), LeadableType.HENCHMAN, excludedHenchman);
-        setup.setHenchman(henchman);
+        final List<Leadable> addHenchman = this.leadableDao.getRandomAndExclude(setup.getHenchmanCount(), 
+                LeadableType.HENCHMAN, excludedHenchman);
+        setup.getHenchman().addAll(addHenchman);
 
         // Get Villians
-        final List<Leadable> villians = this.leadableDao.getRandomAndExclude(setup.getVillianCount(), LeadableType.VILLAIN, excludedVillians);
-        setup.setVillians(villians);
+        final List<Leadable> addVillians = this.leadableDao.getRandomAndExclude(setup.getVillianCount(), 
+                LeadableType.VILLAIN, excludedVillians);
+        setup.getVillians().addAll(addVillians);
 
         return setup;
     }

@@ -22,6 +22,7 @@ package net.bryansaunders.legendary.model;
  * #L%
  */
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -96,6 +97,15 @@ public class GameSetup {
      * Mastermind.
      */
     private Mastermind mastermind;
+   
+    /**
+     * Default Constructor.
+     */
+    public GameSetup() {
+        this.henchman = new LinkedList<Leadable>();
+        this.villians = new LinkedList<Leadable>();
+        this.heroes = new LinkedList<Hero>();
+    }
 
     /**
      * Get the woundDeckCount.
