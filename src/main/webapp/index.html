@@ -128,7 +128,15 @@
         <div class="row">
           <div class="col-md-6 col-xs-12">
             <h4>Heros</h4>
-            <div data-ng-repeat="hero in rand.setup.heroes"><img src="images/{{hero.affiliation}}.png"/> {{hero.name}}</div>
+            <table border="0">
+            	<tr data-ng-repeat="hero in rand.setup.heroes">
+            		<td width="25"><img src="images/{{hero.affiliation}}.png"/></td>
+            		<td width="150"> {{hero.name}} </td>
+            		<td><span data-ng-repeat="type in hero.commonTypes"><img src="images/{{type}}.png" alt="{{type}}"/></span></td>
+            		<td><img data-ng-repeat="type in hero.uncommonTypes" src="images/{{type}}.png" alt="Common Type"/></td>
+            		<td><img data-ng-repeat="type in hero.rareTypes" src="images/{{type}}.png" alt="Rare Type"/></td>
+            	</tr>
+            </table>
 
           </div>
           <div class="col-md-6 col-xs-12">
