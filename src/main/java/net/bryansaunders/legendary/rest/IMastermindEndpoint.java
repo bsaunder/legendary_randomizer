@@ -23,6 +23,8 @@ package net.bryansaunders.legendary.rest;
  */
 
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -49,6 +51,7 @@ public interface IMastermindEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     Response getAllMasterminds();
 
@@ -61,6 +64,7 @@ public interface IMastermindEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getMastermindById(@PathParam("id") Integer id);
@@ -73,6 +77,7 @@ public interface IMastermindEndpoint {
      * @return JSON String
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Response addMastermind(Mastermind mastermind);
@@ -85,6 +90,7 @@ public interface IMastermindEndpoint {
      * @return JSON String
      */
     @DELETE
+    @RolesAllowed("ADMIN")
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response deleteMastermind(@PathParam("id") Integer id);
@@ -98,6 +104,7 @@ public interface IMastermindEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getRandomMasterminds(@PathParam("count") Integer count);

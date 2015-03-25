@@ -22,6 +22,8 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -48,6 +50,7 @@ public interface IHeroEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     Response getAllHeroes();
 
@@ -60,6 +63,7 @@ public interface IHeroEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getHeroById(@PathParam("id") Integer id);
@@ -72,6 +76,7 @@ public interface IHeroEndpoint {
      * @return JSON String
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Response addHero(Hero hero);
@@ -84,6 +89,7 @@ public interface IHeroEndpoint {
      * @return JSON String
      */
     @DELETE
+    @RolesAllowed("ADMIN")
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response deleteHero(@PathParam("id") Integer id);
@@ -97,6 +103,7 @@ public interface IHeroEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getRandomHeroes(@PathParam("count") Integer count);

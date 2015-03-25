@@ -22,6 +22,7 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -42,6 +43,7 @@ public interface IInformationEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     Response getInformation();
 }

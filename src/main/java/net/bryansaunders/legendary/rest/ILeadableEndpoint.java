@@ -22,6 +22,8 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -50,6 +52,7 @@ public interface ILeadableEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     Response getAllLeadables();
 
@@ -62,6 +65,7 @@ public interface ILeadableEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getLeadableById(@PathParam("id") Integer id);
@@ -74,6 +78,7 @@ public interface ILeadableEndpoint {
      * @return JSON String
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Response addLeadable(Leadable leadable);
@@ -86,6 +91,7 @@ public interface ILeadableEndpoint {
      * @return JSON String
      */
     @DELETE
+    @RolesAllowed("ADMIN")
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Response deleteLeadable(@PathParam("id") Integer id);
@@ -101,6 +107,7 @@ public interface ILeadableEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getRandomLeadables(@PathParam("count") Integer count, @QueryParam("type") LeadableType type);

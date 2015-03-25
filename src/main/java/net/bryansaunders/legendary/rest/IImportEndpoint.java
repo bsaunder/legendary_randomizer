@@ -25,6 +25,7 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -53,6 +54,7 @@ public interface IImportEndpoint {
      * @return Response
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Path("/hero")
     Response loadHeroData(MultipartFormDataInput pHeroCsv);
 
@@ -64,6 +66,7 @@ public interface IImportEndpoint {
      * @return Response
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Path("/leadable")
     Response loadLeadableData(MultipartFormDataInput pLeadableCsv);
 
@@ -75,6 +78,7 @@ public interface IImportEndpoint {
      * @return Response
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Path("/scheme")
     Response loadSchemeData(MultipartFormDataInput pSchemeCsv);
 
@@ -86,6 +90,7 @@ public interface IImportEndpoint {
      * @return Response
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Path("/mastermind")
     Response loadMastermindData(MultipartFormDataInput pMastermindCsv);
 }

@@ -23,6 +23,8 @@ package net.bryansaunders.legendary.rest;
  */
 
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -49,6 +51,7 @@ public interface ISchemeEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     Response getAllSchemes();
 
@@ -62,6 +65,7 @@ public interface ISchemeEndpoint {
      */
     @GET
     @Path("/{id}")
+    @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
     Response getSchemeById(@PathParam("id") Integer id);
 
@@ -73,6 +77,7 @@ public interface ISchemeEndpoint {
      * @return JSON String
      */
     @POST
+    @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Response addScheme(Scheme scheme);
@@ -86,6 +91,7 @@ public interface ISchemeEndpoint {
      */
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     @Produces(MediaType.APPLICATION_JSON)
     Response deleteScheme(@PathParam("id") Integer id);
 
@@ -98,6 +104,7 @@ public interface ISchemeEndpoint {
      * @return JSON String
      */
     @GET
+    @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
     Response getRandomSchemes(@PathParam("count") Integer count);
