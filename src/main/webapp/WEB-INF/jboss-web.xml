@@ -23,4 +23,5 @@
 
 <jboss-web>
     <context-root>legendary-randomizer</context-root>
+    <security-domain>other</security-domain>
 </jboss-web>
