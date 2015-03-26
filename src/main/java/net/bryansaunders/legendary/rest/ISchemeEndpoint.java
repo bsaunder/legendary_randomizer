@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
-
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -37,14 +36,20 @@ import javax.ws.rs.core.Response;
 
 import net.bryansaunders.legendary.model.Scheme;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 /**
  * Scheme Service for working with Schemes.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
 @Path("/scheme")
+@Api(value = "/scheme", description = "Scheme Management Service")
 public interface ISchemeEndpoint {
-    
+
     /**
      * Returns a list of all of the Schemes in the System.
      * 
@@ -53,6 +58,9 @@ public interface ISchemeEndpoint {
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "List All Schemes", response = Scheme.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getAllSchemes();
 
     /**
@@ -67,6 +75,10 @@ public interface ISchemeEndpoint {
     @Path("/{id}")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get Scheme by ID", response = Scheme.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 404, message = "Scheme Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getSchemeById(@PathParam("id") Integer id);
 
     /**
@@ -80,6 +92,10 @@ public interface ISchemeEndpoint {
     @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Add Scheme", notes = "Returns the Saved Scheme", response = Scheme.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Saving Data"),
+            @ApiResponse(code = 400, message = "Invalid Request Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response addScheme(Scheme scheme);
 
     /**
@@ -93,6 +109,10 @@ public interface ISchemeEndpoint {
     @Path("/{id}")
     @RolesAllowed("ADMIN")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Delete Scheme by ID")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Deleting Data"),
+            @ApiResponse(code = 404, message = "Scheme Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response deleteScheme(@PathParam("id") Integer id);
 
     /**
@@ -107,6 +127,10 @@ public interface ISchemeEndpoint {
     @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get A Random Number of Schemes", response = Scheme.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 400, message = "Not Enough Schemes"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getRandomSchemes(@PathParam("count") Integer count);
 
 }

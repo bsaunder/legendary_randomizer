@@ -33,7 +33,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import net.bryansaunders.legendary.model.ImportResult;
+
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * Endpoint for Importing Bulk CSV Data.
@@ -44,6 +51,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 @Path("/import")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
 @Produces(MediaType.APPLICATION_JSON)
+@Api(value = "/import", description = "Data Import Service")
 public interface IImportEndpoint {
 
     /**
@@ -56,6 +64,9 @@ public interface IImportEndpoint {
     @POST
     @RolesAllowed("ADMIN")
     @Path("/hero")
+    @ApiOperation(value = "Import Hero Data", notes = "Data will be appended to any existing data", response = ImportResult.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Importing Data"),
+            @ApiResponse(code = 200, message = "Import Successful, Check Results for Import Status") })
     Response loadHeroData(MultipartFormDataInput pHeroCsv);
 
     /**
@@ -68,6 +79,9 @@ public interface IImportEndpoint {
     @POST
     @RolesAllowed("ADMIN")
     @Path("/leadable")
+    @ApiOperation(value = "Import Leadable Data", notes = "Data will be appended to any existing data", response = ImportResult.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Importing Data"),
+            @ApiResponse(code = 200, message = "Import Successful, Check Results for Import Status") })
     Response loadLeadableData(MultipartFormDataInput pLeadableCsv);
 
     /**
@@ -80,6 +94,9 @@ public interface IImportEndpoint {
     @POST
     @RolesAllowed("ADMIN")
     @Path("/scheme")
+    @ApiOperation(value = "Import Scheme Data", notes = "Data will be appended to any existing data", response = ImportResult.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Importing Data"),
+            @ApiResponse(code = 200, message = "Import Successful, Check Results for Import Status") })
     Response loadSchemeData(MultipartFormDataInput pSchemeCsv);
 
     /**
@@ -92,5 +109,8 @@ public interface IImportEndpoint {
     @POST
     @RolesAllowed("ADMIN")
     @Path("/mastermind")
+    @ApiOperation(value = "Import Mastermind Data", notes = "Data will be appended to any existing data", response = ImportResult.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Importing Data"),
+            @ApiResponse(code = 200, message = "Import Successful, Check Results for Import Status") })
     Response loadMastermindData(MultipartFormDataInput pMastermindCsv);
 }

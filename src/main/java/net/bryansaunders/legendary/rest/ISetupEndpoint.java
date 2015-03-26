@@ -31,12 +31,21 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import net.bryansaunders.legendary.model.GameSetup;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 /**
  * Setup Service for getting a Game Setup.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
 @Path("/setup")
+@Api(value = "/setup", description = "Game Setup Service")
 public interface ISetupEndpoint {
 
     /**
@@ -54,6 +63,12 @@ public interface ISetupEndpoint {
     @Path("/{players}")
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
-    Response getGameSetup(@PathParam("players") Integer playerCount, @QueryParam("scheme") Integer schemeId,
-            @QueryParam("mastermind") Integer mastermindId);
+    @ApiOperation(value = "Build a new Game Setup", notes = "Number of players must be between 2 and 5", response = GameSetup.class)
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "Invalid ID supplied for Scheme or Mastermind"),
+            @ApiResponse(code = 500, message = "Error Building Game Setup"),
+            @ApiResponse(code = 200, message = "Request Successful") })
+    Response getGameSetup(
+            @ApiParam(value = "Player Count", allowableValues = "range[2,5]", required = true) @PathParam("players") Integer playerCount,
+            @ApiParam(value = "Scheme ID", required = false) @QueryParam("scheme") Integer schemeId,
+            @ApiParam(value = "Mastermind ID", required = false) @QueryParam("mastermind") Integer mastermindId);
 }

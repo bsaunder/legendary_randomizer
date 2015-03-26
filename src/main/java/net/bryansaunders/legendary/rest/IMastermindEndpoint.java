@@ -22,7 +22,6 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
-
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -37,12 +36,18 @@ import javax.ws.rs.core.Response;
 
 import net.bryansaunders.legendary.model.Mastermind;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 /**
  * Mastermind Service for working with Masterminds.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
 @Path("/mastermind")
+@Api(value = "/mastermind", description = "Mastermind Management Service")
 public interface IMastermindEndpoint {
 
     /**
@@ -53,6 +58,9 @@ public interface IMastermindEndpoint {
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "List All Masterminds", response = Mastermind.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getAllMasterminds();
 
     /**
@@ -67,10 +75,15 @@ public interface IMastermindEndpoint {
     @PermitAll
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get Mastermind by ID", response = Mastermind.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 404, message = "Mastermind Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getMastermindById(@PathParam("id") Integer id);
 
     /**
-     * Adds the Supplied Mastermind to the Database. Returns the Updated Mastermind.
+     * Adds the Supplied Mastermind to the Database. Returns the Updated
+     * Mastermind.
      * 
      * @param mastermind
      *            Mastermind to Add.
@@ -80,6 +93,10 @@ public interface IMastermindEndpoint {
     @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Add Mastermind", notes = "Returns the Saved Mastermind", response = Mastermind.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Saving Data"),
+            @ApiResponse(code = 400, message = "Invalid Request Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response addMastermind(Mastermind mastermind);
 
     /**
@@ -93,6 +110,10 @@ public interface IMastermindEndpoint {
     @RolesAllowed("ADMIN")
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Delete Mastermind by ID")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Deleting Data"),
+            @ApiResponse(code = 404, message = "Mastermind Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response deleteMastermind(@PathParam("id") Integer id);
 
     /**
@@ -107,5 +128,9 @@ public interface IMastermindEndpoint {
     @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get A Random Number of Masterminds", response = Mastermind.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 400, message = "Not Enough Masterminds"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getRandomMasterminds(@PathParam("count") Integer count);
 }

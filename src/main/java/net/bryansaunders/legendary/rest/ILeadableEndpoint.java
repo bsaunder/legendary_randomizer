@@ -38,12 +38,18 @@ import javax.ws.rs.core.Response;
 import net.bryansaunders.legendary.model.Leadable;
 import net.bryansaunders.legendary.model.LeadableType;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 /**
  * Leadable Service for working with Leadables.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
 @Path("/leadable")
+@Api(value = "/leadable", description = "Leadable Management Service")
 public interface ILeadableEndpoint {
 
     /**
@@ -54,6 +60,9 @@ public interface ILeadableEndpoint {
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "List All Leadables", response = Leadable.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getAllLeadables();
 
     /**
@@ -68,6 +77,10 @@ public interface ILeadableEndpoint {
     @PermitAll
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get Leadable by ID", response = Leadable.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 404, message = "Leadable Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getLeadableById(@PathParam("id") Integer id);
 
     /**
@@ -81,6 +94,10 @@ public interface ILeadableEndpoint {
     @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Add Leadable", notes = "Returns the Saved Leadable", response = Leadable.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Saving Data"),
+            @ApiResponse(code = 400, message = "Invalid Request Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response addLeadable(Leadable leadable);
 
     /**
@@ -94,6 +111,10 @@ public interface ILeadableEndpoint {
     @RolesAllowed("ADMIN")
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Delete Leadable by ID")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Deleting Data"),
+            @ApiResponse(code = 404, message = "Leadable Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response deleteLeadable(@PathParam("id") Integer id);
 
     /**
@@ -110,5 +131,9 @@ public interface ILeadableEndpoint {
     @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get A Random Number of Leadables", response = Leadable.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 400, message = "Not Enough Leadablees"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getRandomLeadables(@PathParam("count") Integer count, @QueryParam("type") LeadableType type);
 }

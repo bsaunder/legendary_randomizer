@@ -36,12 +36,18 @@ import javax.ws.rs.core.Response;
 
 import net.bryansaunders.legendary.model.Hero;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 /**
  * Hero Service for working with Heros.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
 @Path("/hero")
+@Api(value = "/hero", description = "Hero Management Service")
 public interface IHeroEndpoint {
 
     /**
@@ -52,6 +58,9 @@ public interface IHeroEndpoint {
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "List All Heroes", response = Hero.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getAllHeroes();
 
     /**
@@ -66,6 +75,10 @@ public interface IHeroEndpoint {
     @PermitAll
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get Hero by ID", response = Hero.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 404, message = "Hero Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getHeroById(@PathParam("id") Integer id);
 
     /**
@@ -79,6 +92,10 @@ public interface IHeroEndpoint {
     @RolesAllowed("ADMIN")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Add Hero", notes = "Returns the Saved Hero", response = Hero.class)
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Saving Data"),
+            @ApiResponse(code = 400, message = "Invalid Request Data"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response addHero(Hero hero);
 
     /**
@@ -92,6 +109,10 @@ public interface IHeroEndpoint {
     @RolesAllowed("ADMIN")
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Delete Hero by ID")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Deleting Data"),
+            @ApiResponse(code = 404, message = "Hero Not Found"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response deleteHero(@PathParam("id") Integer id);
 
     /**
@@ -106,5 +127,9 @@ public interface IHeroEndpoint {
     @PermitAll
     @Path("/random/{count}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get A Random Number of Heroes", response = Hero.class, responseContainer = "List")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Error Retrieving Data"),
+            @ApiResponse(code = 400, message = "Not Enough Heroes"),
+            @ApiResponse(code = 200, message = "Request Successful") })
     Response getRandomHeroes(@PathParam("count") Integer count);
 }

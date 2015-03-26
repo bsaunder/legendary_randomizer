@@ -29,12 +29,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import net.bryansaunders.legendary.model.Information;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 /**
- * Information Service for providing information about the currently running application.
+ * Information Service for providing information about the currently running
+ * application.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  */
 @Path("/info")
+@Api(value = "/info", description = "Application Information Service")
 public interface IInformationEndpoint {
 
     /**
@@ -45,5 +54,8 @@ public interface IInformationEndpoint {
     @GET
     @PermitAll
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Get Application Information", response = Information.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Request Successful"),
+            @ApiResponse(code = 500, message = "Error Building Game Setup") })
     Response getInformation();
 }

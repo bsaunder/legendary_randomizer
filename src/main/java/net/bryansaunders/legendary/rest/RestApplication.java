@@ -22,22 +22,29 @@ package net.bryansaunders.legendary.rest;
  * #L%
  */
 
-
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+
+import com.wordnik.swagger.jaxrs.config.BeanConfig;
 
 /**
  * Initializes the REST Services API.
  * 
  * @author Bryan Saunders <btsaunde@gmail.com>
- *
+ * 
  */
 @ApplicationPath("/rest")
 public class RestApplication extends Application {
-    /*@Override
-    public Set<Class<?>> getClasses() {
-        final Set<Class<?>> classes = new HashSet<>();
-        // Add Implementation Classes Here
-        return classes;
-    }*/
+
+    /**
+     * Default Constructor.
+     */
+    public RestApplication() {
+        final BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0.0");
+        beanConfig.setBasePath("hhttp://bts-fsw.airdns.org:30454/rest");
+        beanConfig.setResourcePackage("net.bryansaunders.legendary.rest.impl");
+        beanConfig.setDescription("Game Setup API for Marvel Legendary");
+        beanConfig.setScan(true);
+    }
 }

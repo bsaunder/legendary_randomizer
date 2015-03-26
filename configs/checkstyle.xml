@@ -207,7 +207,7 @@
 		<module name="LeftCurly">
 			<property name="severity" value="info" />
 			<property name="option" value="eol" />
-			<property name="maxLineLength" value="120" />
+			<property name="maxLineLength" value="160" />
 			<property name="tokens"
 				value="CLASS_DEF,CTOR_DEF,INTERFACE_DEF,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,METHOD_DEF" />
 		</module>
@@ -225,7 +225,7 @@
 		<module name="LineLength">
 			<property name="severity" value="warning" />
 			<property name="ignorePattern" value="^$" />
-			<property name="max" value="120" />
+			<property name="max" value="160" />
 			<property name="tabWidth" value="4" />
 		</module>
 		<module name="AvoidStarImport">
